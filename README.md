@@ -1,7 +1,8 @@
-
-# GitHub repository for small and big projects.
+## GitHub repository for small and big projects.
 ### YA-YH-AV24TR
 
-We all know that nobody is reading this..... And if you do you GAY with big Y
+- Name your exports as ´run´.
+- Try to keep in sub directories.
+- Contents are mostly exercises/assignments or just random code.
 
-> Contents are mostly exercises or assignments.
+![fumowumo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTunZlUtYmgB-SRs4ClrIGKm4JyoUM-qbOn5A&s)
