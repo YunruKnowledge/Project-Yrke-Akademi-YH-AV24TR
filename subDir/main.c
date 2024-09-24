@@ -39,5 +39,7 @@ int main (void) {
     printf("long DOUBLE size: %zu | min: %Le | max: %Le\n", sizeof(long double), LDBL_MIN, LDBL_MAX);
     printf("enum color size: %zu\n", sizeof(enum color));
 
+    printf("new to test reverting.");
+
     return 0;
 }
