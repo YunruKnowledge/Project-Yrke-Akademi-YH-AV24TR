@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 int binaryRead(char input[], int verbal)
 {
     int decimalTotal = 0;
