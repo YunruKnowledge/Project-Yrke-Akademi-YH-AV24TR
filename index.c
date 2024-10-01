@@ -7,7 +7,7 @@ int main(){
 
     printf("Choose one of the options! \n");
     printf("--------------1. For Binary transform ----------------------- \n");
-    printf("--------------2. For Binary callculator ----------------------- \n");
+    printf("--------------2. For Binary substraction ----------------------- \n");
     scanf("%d01", &options);
 
     if (options == 1){
@@ -23,7 +23,7 @@ int main(){
         printf("Enter second num: ");
         scanf("%d", &numB);
 
-        binaryCalculator(numA, numB);
+        binarySubstraction(numA, numB);
     }
 
     printf("\n");

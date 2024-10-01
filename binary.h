@@ -1,3 +1,4 @@
+#include <stdio.h>
 void toBinary(int num){
     if (num == 0){
         printf("%d", num);
@@ -12,28 +13,21 @@ void toBinary(int num){
         num /= 2;
     }
     
+    printf("Binary answer: ");
     for (int j = i-1; j >= 0; j--) {
         printf("%d",binaryNum[j]);  
     }
 }
 
-void binaryCalculator(int numA, int numB){
-    int binaryNumA[16], binaryNumB[16], resoult[16];
-    int i = 0, k = 0;
+void binarySubstraction(int numA, int numB){
+    while (numB != 0)
+    {
+        int resoult = (~numA) & numB;
 
-    while (numA > 0) {
-        binaryNumA[i++] = numA % 2;
-        numA /= 2;
+        numA = numA ^ numB;
+        numB = resoult << 1;
     }
 
-    while (numB > 0) {
-        binaryNumB[k++] = numB % 2;
-        numB /= 2;
-    }
-
-
-    for (int j = i-1; j >= 0; j--) {
-        resoult[j] = binaryNumA[j] - binaryNumB[j];
-        printf("%d", resoult[j]);  
-    }
+    printf("Decimal answer: %d \n", numA - numB);
+    toBinary(numA);
 }
