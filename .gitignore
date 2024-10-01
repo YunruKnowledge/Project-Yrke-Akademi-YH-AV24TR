@@ -4,5 +4,8 @@ private*.*
 secret*.*
 hide*.*
 hidden*.*
-
 !main.*
+
+build/
+.vscode
+output/

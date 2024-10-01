@@ -1,10 +1,22 @@
-# WELCOME TO YAQ8BI'S BRANCH
+  
+<h1 align=center>
+  GitHub repository for small and big projects.
+</h1>
 
-### Part of YA-YH-AV24TR repo-project(By YunruKnowledge)
+<p align=center>
+  YA-YH-AV24TR
+</p>
 
-I'll have my exercises here and probably a few notes?
+<p align=center>
+  <img alt="Views" src="https://counter.seku.su/cmoe?name=@YunruKnowledge&theme=gb">
+</p>
 
-> Japanese will be used inside the files!
+<h2> </h2>
 
-Have a blessed day!
+> [!IMPORTANT]
+> Git-ignore your builds!
+- Try to keep in sub directories.
+- Contents are mostly exercises/assignments or just random code.
 
+![fumowumo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTunZlUtYmgB-SRs4ClrIGKm4JyoUM-qbOn5A&s)
+![Anywa](https://media.tenor.com/8rB14-4n0zcAAAAM/sunglasses-glasses.gif)
