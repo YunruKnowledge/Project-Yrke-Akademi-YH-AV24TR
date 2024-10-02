@@ -1,74 +1,5 @@
 #include <stdio.h>
-#include <string.h>
-
-int binaryRead(char input[], int verbal)
-{
-    int decimalTotal = 0;
-    if (verbal)
-        printf("DEBUG - decimal start: %d\n", decimalTotal);
-    if (verbal)
-        printf("DEBUG - strlen input length: %zu\n", strlen(input));
-
-    for (int i = 0; i < strlen(input); i++)
-    {
-        int digit = input[i] - '0';
-        if (digit != 0 && digit != 1)
-        {
-            printf("Invalid, 0 and 1 only.\n");
-            if (verbal)
-                printf("BEDUG - ERROR - Bit: %d at position %d\n", digit, i);
-            return 0;
-        }
-
-        int power = strlen(input) - i - 1;
-        int value = digit * (1 << power);
-        decimalTotal += value;
-        if (verbal)
-            printf("DEBUG - Bit: %d at position %d contributes: %d\n", digit, i, value);
-    }
-    return decimalTotal;
-}
-
-int hexToNum(char hex, int verbal)
-{
-    if (hex <= '9' && hex >= '0')
-        return hex - '0';
-    else if (hex >= 'A' && hex <= 'F')
-        return hex - 'A' + 10;
-    else if (hex >= 'a' && hex <= 'f')
-        return hex - 'a' + 10;
-    else
-        return -1;
-}
-
-int hexadecimalRead(char input[], int verbal)
-{
-    int decimalTotal = 0;
-    int length = strlen(input);
-    if (verbal)
-        printf("DEBUG - decimal start: %d\n", decimalTotal);
-    if (verbal)
-        printf("DEBUG - strlen input length: %i\n", length);
-
-    for (int i = 0; i < length; i++)
-    {
-        int value = hexToNum(input[i], verbal);
-        if (value == -1)
-        {
-            printf("Invalid hex character: %c at digit %d\n", input[i], i + 1);
-            if (verbal)
-                printf("DEBUG - ERROR - Invalid hex character: %c at position %d\n", input[i], i);
-            return 0;
-        }
-
-        int power = length - i - 1;
-        decimalTotal += value * (1 << (4 * power));
-        if (verbal)
-            printf("DEBUG - Hex: %c (decimal %d) at position %d contributes: %d\n", input[i], value, i, value * (1 << (4 * power)));
-    }
-
-    return decimalTotal;
-}
+#include "./lib/baseNum.c"
 
 int main()
 {
@@ -83,7 +14,6 @@ int main()
 
     int inputChoice;
     int debugger = 0;
-    int baseMulti;
     scanf("%d", &inputChoice);
 
     if (inputChoice == 7)
@@ -103,7 +33,7 @@ int main()
         scanf("%2s", &input);
 
         if (strlen(input) < 2)
-            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%zu] DIGITS.\n", strlen(input));
+            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%u] DIGITS.\n", strlen(input));
         printf("%d\n", binaryRead(input, debugger));
     }
     if (inputChoice == 2)
@@ -115,7 +45,7 @@ int main()
         scanf("%4s", &input);
 
         if (strlen(input) < 4)
-            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%zu] DIGITS.\n", strlen(input));
+            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%u] DIGITS.\n", strlen(input));
         printf("%d\n", binaryRead(input, debugger));
     }
     if (inputChoice == 3)
@@ -127,7 +57,7 @@ int main()
         scanf("%8s", &input);
 
         if (strlen(input) < 8)
-            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%zu] DIGITS.\n", strlen(input));
+            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%u] DIGITS.\n", strlen(input));
         printf("%d\n", binaryRead(input, debugger));
     }
 
@@ -140,7 +70,7 @@ int main()
         scanf("%2s", &input);
 
         if (strlen(input) < 2)
-            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%zu] DIGITS.\n", strlen(input));
+            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%u] DIGITS.\n", strlen(input));
         printf("%d\n", hexadecimalRead(input, debugger));
     }
     if (inputChoice == 5)
@@ -152,7 +82,7 @@ int main()
         scanf("%4s", &input);
 
         if (strlen(input) < 4)
-            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%zu] DIGITS.\n", strlen(input));
+            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%u] DIGITS.\n", strlen(input));
         printf("%d\n", hexadecimalRead(input, debugger));
     }
     if (inputChoice == 6)
@@ -164,7 +94,7 @@ int main()
         scanf("%8s", &input);
 
         if (strlen(input) < 8)
-            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%zu] DIGITS.\n", strlen(input));
+            printf("WARNING - INPUT IS SHORTER THAN EXPECTED, RAN WITH [%u] DIGITS.\n", strlen(input));
         printf("%u\n", hexadecimalRead(input, debugger)); // unsigned output
     }
 }
