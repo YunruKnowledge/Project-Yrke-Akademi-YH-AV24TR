@@ -13,9 +13,10 @@ int main(){
     if (options == 1){
         printf("Enter any number: ");
         scanf("%d", &num);
-        GetColor(white);
-        GetBGColor(black);
+        SetBGHighIntenstyColor(yellow);
+        SetTextHighIntenstyColor(red);
         toBinary(num);  
+        ResetColors();
     }
 
     if (options == 2){

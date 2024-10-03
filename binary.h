@@ -19,7 +19,7 @@ void toBinary(int num){
     {
         printf("0");
     }
-    
+
     for (int j = i-1; j >= 0; j--) {
         printf("%d",binaryNum[j]);  
     }
