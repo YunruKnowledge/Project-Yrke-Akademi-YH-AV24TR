@@ -91,25 +91,25 @@ char SetUnderlineTextColor(enum usableColors color) {
 
 char SetTextHighIntenstyColor(enum usableColors color) {
   if (color == red)
-    return printf("\e[4;91m");
+    return printf("\e[1;91m");
 
   if (color == blue)
-    return printf("\e[4;94m");
+    return printf("\e[1;94m");
 
   if (color == white)
-    return printf("\e[4;97m");
+    return printf("\e[1;97m");
 
   if (color == black)
-    return printf("\e[4;90m");
+    return printf("\e[1;90m");
 
   if (color == green)
-    return printf("\e[4;92m");
+    return printf("\e[1;92m");
 
   if (color == yellow)
-    return printf("\e[4;93m");
+    return printf("\e[1;93m");
 
   if (color == magenta)
-    return printf("\e[4;95m");
+    return printf("\e[1;95m");
 
   if (color == cyan)
     return printf("\e[4;96m");
