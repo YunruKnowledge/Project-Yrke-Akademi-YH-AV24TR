@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "binary.h"
+#include "colors.h"
 
 int main(){
     int num, options;
@@ -9,10 +10,11 @@ int main(){
     printf("--------------1. For Binary transform ----------------------- \n");
     printf("--------------2. For Binary substraction ----------------------- \n");
     scanf("%d01", &options);
-
     if (options == 1){
         printf("Enter any number: ");
         scanf("%d", &num);
+        GetColor(white);
+        GetBGColor(black);
         toBinary(num);  
     }
 
