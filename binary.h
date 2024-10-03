@@ -1,4 +1,6 @@
-#include <stdio.h>
+#ifndef BinaryLib
+#define BinaryLib
+
 void toBinary(int num){
     if (num == 0){
         printf("%d", num);
@@ -37,3 +39,4 @@ void binarySubstraction(int numA, int numB){
     printf("Decimal answer: %d \n", numA - numB);
     toBinary(numA);
 }
+#endif

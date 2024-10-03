@@ -6,10 +6,11 @@ int main(){
     int num, options;
     int numA, numB;
 
-    printf("Choose one of the options! \n");
-    printf("--------------1. For Binary transform ----------------------- \n");
-    printf("--------------2. For Binary substraction ----------------------- \n");
+    printf("\t \t -=Choose one of the options!=- \n");
+    printf("\t \t 1. For Binary transform \n");
+    printf("\t \t 2. For Binary substraction \n");
     scanf("%d01", &options);
+    
     if (options == 1){
         printf("Enter any number: ");
         scanf("%d", &num);
