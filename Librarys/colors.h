@@ -1,4 +1,5 @@
-#include <stdio.h>
+#ifndef ColorLib
+#define ColorLib
 
 enum usableColors {
   red,
@@ -194,3 +195,4 @@ char SetBGHighIntenstyColor(enum usableColors color) {
 }
 
 char ResetColors() { return printf("\x1b[m"); }
+#endif
