@@ -1,4 +1,4 @@
-
+// if on external viewer (GitHub), view through code.
 These are just notes, comes with invisible asterisks.
 
 `volatile` declaration - type qualifier for variables always read from memory, remains untouched by compiler.
@@ -27,3 +27,8 @@ enum [NAME] [VAR_NAME] = [ENUM_VAL]; // calling enum.
 `|   BSS      |` -> Uninitialized data - Zero
 `|   DATA     |` -> DS initialized data - Global / static variables
 `|   TEXT     |` -> Binary code - Read only
+
+> Free from memory using `free();`
+int *p = (int *)malloc(sizeof(int)); // p points to adress.
+free(p); // remove p pointer link, adress remains.
+return; // end function.
