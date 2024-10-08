@@ -16,8 +16,28 @@ Private variable.
 enum [NAME] {a=1,b=5,c} // a=1 b=5 c=6
 enum [NAME] [VAR_NAME] = [ENUM_VAL]; // calling enum.
 
+`struct` data type - object class.
+struct [NAME] {int [MEMBER_VALUE]:8; char [MEMBER_NAME][];} [OR_NAME_HERE]; // :8 meaning 8 bits.
+struct [NAME] [VAR_NAME]; // call.
+
+`union`data type - same as struct, but all member share value in memory. Allocates the highest bit/byte amount.
+struct [NAME] {int [VALUE]; int [VALUE_2]}; struct [NAME] [VAR_NAME];
+[VAR_NAME].[VALUE] = 4;
+[VAR_NAME].[VALUE_2] = 6;
+// log([VAR_NAME].[VALUE]) outputs 6
+
+`([TYPE])[VAR]`type casting - changes/specifies type of variable. Truncates data.
+float fl = 3.14; int fake_fl = (int)fl;
+// log(fake_fl) outputs int of 3
+
+`void` VOID O.O - ~~point of~~ no return, or sent to the void.
+(void) || void [FUNCTION]
+
 > Literals, term for hard coded variables.
+
 > Quotations, single char '', char array ""
+
+> Type promotion, when casting a variable to have a bigger type.
 
 `  MEMORY MAP  `
 `| ENVIROMENT |` -> Args
