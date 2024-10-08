@@ -6,3 +6,5 @@
 > Contents are mostly* exercises or assignments.
 
 *mostly? ._.
+
+chmod u+x run.sh && ./run.sh
