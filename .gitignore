@@ -6,3 +6,4 @@ hide*.*
 hidden*.*
 
 !main.*
+output/
