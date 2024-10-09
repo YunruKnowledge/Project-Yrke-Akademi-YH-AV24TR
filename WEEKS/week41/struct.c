@@ -14,10 +14,8 @@ int main(void) {
     strcpy(nobject.name, "PykeFumosson");
     nobject.age = 40;
     
-    // Uncomment this line to assign the slogan
     strcpy(nobject.slogan, "Captains told me to catch the fumonsters, but the fumonsters told me to hunt Captains");
 
-    // Print the slogan only if it's initialized
     printf("Your age is: %d,\nYour name is: %s,\nYour favourite line is: %s\n", nobject.age, nobject.name, nobject.slogan);
     
     return 0;

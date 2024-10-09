@@ -1,5 +1,6 @@
 ./run
 run
+output
 private*.*
 secret*.*
 hide*.*
