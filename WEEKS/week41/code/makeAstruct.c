@@ -11,12 +11,29 @@ struct user {
 
 int main(void){
 //loading thing.
-   /* for (int i = 0; i < 9; i++){
+// bir anaLoop, icinde loop1 9 a yetisene kaadar print yapiyor. altinda bir loop2 9 ile basliyip -i.
+
+    int n = 9;
+    
+   for (int i = 0; i <= n; i++){
+    
+    printf("[");
+    for (int j = 0; j <= i; j++){
         printf("#");
         fflush(stdout);
-        sleep(1);
-    }*/
+    }
 
+        for (int a = n; a > i; a--){
+            printf("-");
+            fflush(stdout);
+        }
+    printf("]\n");
+    fflush(stdout);
+    sleep(1);
+    } 
+
+
+/*
     printf("[#------]\n");
     sleep(1);printf("[##-----]\n");
     sleep(1);printf("[###----]\n");
@@ -28,8 +45,9 @@ int main(void){
 
     printf("THE PROGRAM LOADED.\n");
     sleep(3);
-    printf("LOADED--LAUNCHING NOW\n");
+    printf("**LOADED**\n--LAUNCHING NOW--\n");
     sleep(4);
+    */
 
 //App below
     int usersAmount;
@@ -45,7 +63,7 @@ int main(void){
     struct user userData[MAXUSERS];///Macro for struct amounts to compensate the users.
 
     for (int i = 0; i<MAXUSERS; i++){
-        printf("User %i", i);
+        printf("User %i\n", i);
     printf("What is your ID?: ");
     scanf("%i", &userData[i].id);
 
