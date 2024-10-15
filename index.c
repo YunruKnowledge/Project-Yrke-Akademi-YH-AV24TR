@@ -8,10 +8,13 @@
 #define MIN_HAND 0
 #define MAX_AMAOUNT_OF_TRYS 10
 
+int Play();
+int isGoingToPlay();
+
 unsigned int aiNumber, playerNumber, numOfTrys = MAX_AMAOUNT_OF_TRYS;
 bool isPlaying = false;
 
-void printRandoms(int min, int max, int count) {
+void printRandoms(int min, int max) {
     srand(time(0));
 
     int random_number = rand() % (max - min + 1) + min;
@@ -49,7 +52,7 @@ int Play() {
 
 int isGoingToPlay() {
   int changeState;
-  printRandoms(MIN_HAND, MAX_HAND, 1);
+  printRandoms(MIN_HAND, MAX_HAND);
   isPlaying = false;
 
   do{ 
