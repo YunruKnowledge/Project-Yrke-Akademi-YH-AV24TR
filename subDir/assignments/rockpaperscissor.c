@@ -1,92 +1,126 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
+enum gamemode
+{
+    pvp,
+    pve, // player vs ai
+    ai   // ai vs ai
+};
+
+const char *moves[] = {"", "rock", "paper", "scissor"};
 enum rps
 {
     rock = 1,
     paper,
     scissor
 };
-typedef struct player newPlayer;
-struct player
+
+typedef struct
 {
     unsigned int input;
-    unsigned int randomsght;
-};
+    char name[32];
+    // unsigned int futurestuff;
+} newPlayer;
+
 newPlayer player_1 = {0};
 newPlayer player_2 = {0};
 
-int runComparisionLogic(unsigned int value_1, unsigned int value_2)
+void getPlayerInput(newPlayer *player)
 {
-    if (value_1 == rock && value_2 == scissor)
+    printf("\n\n"); // space out
+    printf("%s - Select your attack.\n", player->name);
+    printf("%i. Rock | %i. Paper | %i. Scissor\n", rock, paper, scissor);
+    printf("User: ");
+
+    while (1)
     {
-        printf("Player 1 wins, played rock against scissors.\n");
+        scanf("%u", &(player->input));
+        if (player->input >= rock && player->input <= scissor)
+        {
+            break; // <---------------------------------------
+        }
+        else
+        {
+            printf("\n\n"); // space out
+            printf("\nInvalid input of [%u]\n", player->input);
+            printf("%i. Rock | %i. Paper | %i. Scissor\n\n", rock, paper, scissor);
+            printf("User: ");
+        };
     }
-    else if (value_1 == paper && value_2 == rock)
+}
+
+void getRandomInput(newPlayer *autoPlayer)
+{
+    autoPlayer->input = rand() % scissor + 1;
+}
+
+void runPrintLogic(newPlayer *play1, newPlayer *play2)
+{
+    if (play1->input == play2->input)
     {
-        printf("Player 1 wins, played paper against rock.\n");
+        printf("It's a draw! Both played the same move.\n");
+        return;
     }
-    else if (value_1 == scissor && value_2 == paper)
+    else if ((play1->input == rock && play2->input == scissor) ||
+             (play1->input == paper && play2->input == rock) ||
+             (play1->input == scissor && play2->input == paper))
     {
-        printf("Player 1 wins, played scissor against paper.\n");
-    }
-    else if (value_2 == rock && value_1 == scissor)
-    {
-        printf("Player 2 wins, played rock against scissors.\n");
-    }
-    else if (value_2 == paper && value_1 == rock)
-    {
-        printf("Player 2 wins, played paper against rock.\n");
-    }
-    else if (value_2 == scissor && value_1 == paper)
-    {
-        printf("Player 2 wins, played scissor against paper.\n");
+        printf("%s wins, played ", play1->name);
     }
     else
     {
-        printf("Draw, [%u] [%u]\n", value_1, value_2);
+        printf("%s wins, played ", play2->name);
     }
-    return 0;
+
+    printf("%s against %s.\n", moves[play1->input], moves[play2->input]);
 }
 
 int main(void)
 {
-    printf("Player 1 - Select your attack.\n");
-    printf("1. Rock | 2. Paper | 3. Scissor\n");
-    while (!player_1.input || player_1.input > 3)
+    srand(time(NULL));
+    unsigned int currentGamemode;
+    printf("Select game mode:\n");
+    printf("%i. Player vs Player\n", pvp);
+    printf("%i. Player vs AI\n", pve);
+    printf("%i. AI vs AI\n", ai);
+    printf("Enter mode: ");
+    scanf("%u", &currentGamemode);
+
+    switch (currentGamemode)
     {
-        if (player_1.input > 3)
-        {
-            printf("\nInvalid input - [%u]\n", player_1.input);
-            printf("1. Rock | 2. Paper | 3. Scissor\n");
-            scanf("%u", &player_1.input);
-        }
-        else
-        {
-            scanf("%u", &player_1.input);
-        }
+    case pvp:
+        strcpy(player_1.name, "Player 1");
+        strcpy(player_2.name, "Player 2");
+        getPlayerInput(&player_1);
+        getPlayerInput(&player_2);
+        break;
+    case pve:
+        strcpy(player_1.name, "Player 1");
+        strcpy(player_2.name, "[AI] Player 2");
+        getPlayerInput(&player_1);
+        getRandomInput(&player_2);
+        break;
+    case ai:
+        strcpy(player_1.name, "[AI] Magnus");
+        strcpy(player_2.name, "[AI] Hikaru");
+        getRandomInput(&player_1);
+        getRandomInput(&player_2);
+        break;
+    default:
+        printf("Invalid mode selected. Exiting...\n");
+        
+        return 1;  // <-------------------------------
     }
 
-    printf("Player 2 - Select your attack.\n");
-    printf("1. Rock | 2. Paper | 3. Scissor\n");
-    while (!player_2.input || player_2.input > 3)
-    {
-        if (player_2.input > 3)
-        {
-            printf("\nInvalid input - [%u]\n", player_2.input);
-            printf("1. Rock | 2. Paper | 3. Scissor\n");
-            scanf("%u", &player_2.input);
-        }
-        else
-        {
-            scanf("%u", &player_2.input);
-        }
-    }
-
+    printf("\n\n"); // space out
     printf("Player 1 inputed: %i\n", player_1.input);
     printf("Player 2 inputed: %i\n", player_2.input);
-    printf("\n\n\n\n");
+    printf("\n");
 
-    runComparisionLogic(player_1.input, player_2.input);
+    runPrintLogic(&player_1, &player_2);
 
     return 0;
 }
