@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-
 #include <unistd.h>//sleep
 
 int main(){
     char playAgain = 'y';
+    system("clear");
 
     while (playAgain == 'y' || playAgain == 'Y'){
         srand(time(NULL));
