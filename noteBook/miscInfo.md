@@ -53,6 +53,12 @@ x ? y : z;
 
 `Type promotion` term - when casting a variable to have a bigger type.
 
+`Compound`- / `Block` statement, within a {}, eg. body of function.
+
+`Expression` statement, value or variable.
+
+`Selection` / `Braching` statement, if and switch.
+
 # Misc.
 
 `  MEMORY MAP  `
