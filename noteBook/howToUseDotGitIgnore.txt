@@ -1,1 +1,0 @@
-exclamation main.* means dont ignore file that has name main.any, the stars represent randomness/all posibility.
