@@ -1,4 +1,5 @@
 #include "color.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -59,13 +60,13 @@ int isGoingToPlay() {
     printf("If you want to play again write \"y\" or if you want to exit write \"n\" \n");
     scanf("%c", &*changeState);
 
-    if (changeState[0] == 'y'){
+    if (tolower(changeState[0]) == 'y'){
         numOfTrys = MAX_AMAOUNT_OF_TRYS;
         system("clear");
         Play();
         isPlaying = true;
     }
-    else if (changeState[0] == 'n')
+    else if (tolower(changeState[0]) == 'n')
         return 0;
 
     system("clear");
