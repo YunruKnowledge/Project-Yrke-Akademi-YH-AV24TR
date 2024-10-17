@@ -51,22 +51,25 @@ int Play() {
 }
 
 int isGoingToPlay() {
-  int changeState;
+  char changeState[0];
   printRandoms(MIN_HAND, MAX_HAND);
   isPlaying = false;
 
   do{ 
-    printf("If you want to play again write 1 or if you want to exit write 2 \n");
-    scanf("%i", &changeState);
+    printf("If you want to play again write \"y\" or if you want to exit write \"n\" \n");
+    scanf("%c", &*changeState);
 
-    if (changeState == 1){
+    if (changeState[0] == 'y'){
         numOfTrys = MAX_AMAOUNT_OF_TRYS;
         system("clear");
         Play();
         isPlaying = true;
     }
-    else if (changeState == 2)
+    else if (changeState[0] == 'n')
         return 0;
+
+    system("clear");
+        
   } while (!isPlaying);
 }
 
