@@ -4,12 +4,9 @@
 
 int main(){
     int i = 0;
-
     while (i <= RANGE){
-        int lastDigit = i % 10;
-        if(lastDigit == 7){
+        if(i % 10 == 7){
             printf("%i \n", i);
-            continue;
         }
         i++;
     }
