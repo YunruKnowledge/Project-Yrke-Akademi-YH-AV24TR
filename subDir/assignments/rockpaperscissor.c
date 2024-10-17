@@ -69,13 +69,13 @@ void runPrintLogic(newPlayer *play1, newPlayer *play2)
              (play1->input == scissor && play2->input == paper))
     {
         printf("%s wins, played ", play1->name);
+        printf("%s against %s.\n", moves[play1->input], moves[play2->input]);
     }
     else
     {
         printf("%s wins, played ", play2->name);
+        printf("%s against %s.\n", moves[play2->input], moves[play1->input]);
     }
-
-    printf("%s against %s.\n", moves[play1->input], moves[play2->input]);
 }
 
 int main(void)
@@ -111,8 +111,8 @@ int main(void)
         break;
     default:
         printf("Invalid mode selected. Exiting...\n");
-        
-        return 1;  // <-------------------------------
+
+        return 1; // <-------------------------------
     }
 
     printf("\n\n"); // space out
