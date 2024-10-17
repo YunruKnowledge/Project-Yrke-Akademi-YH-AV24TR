@@ -11,6 +11,7 @@ enum usableColors {
   magenta,
   cyan,
 };
+
 char SetTextColor(enum usableColors color);
 
 char SetBoldTextColor(enum usableColors color);

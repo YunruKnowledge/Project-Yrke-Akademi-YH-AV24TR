@@ -5,14 +5,11 @@ int getRandomNumber(int min, int max) {
 }
 
 int* getArrayOfRandomNumbers(int min, int max, int count) {
-    if (count <= 0 || min >= max) return NULL;
-
     int* numbers = (int*)malloc(count * sizeof(int));
-    if (!numbers) return NULL;
 
-    srand(time(NULL));
-    for (int i = 0; i < count; i++) {
-        numbers[i] = min + rand() % (max - min);
+    unsigned int seed = time(0);
+    for (int i = 0; i <= count; i++) {
+        numbers[i] = min + rand_r(&seed) % (max - min);
     }
     return numbers;
 }
