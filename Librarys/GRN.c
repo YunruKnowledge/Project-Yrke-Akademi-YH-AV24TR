@@ -1,5 +1,3 @@
-#include "GRN.h"
-
 int getRandomNumber(int min, int max) {
     unsigned int seed = time(0);
     int rd_num = rand_r(&seed) % (max - min + 1) + min;
