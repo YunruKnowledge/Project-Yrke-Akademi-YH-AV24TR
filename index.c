@@ -5,6 +5,7 @@
 char array[10] ={'y', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 bool finishGame = false;
 
+void showBoard();
 
 int showChoosingBoard(){
     printf("\nEnter the number where you want to place your mark \n");
@@ -14,67 +15,61 @@ int showChoosingBoard(){
     }
 }
 
-int checkGameState(char currentSymbol){
-    for (int i = 1; i < sizeof(array); i += 3){
-                if (array[i] == currentSymbol && array[i+1] == currentSymbol && array[i+2] == currentSymbol){
-                    printf("Congratulation! Player (%c) won! \n", toupper(currentSymbol));
-                    sleep(1);
-                    finishGame = true;
-                }
-            }
+bool checkWin(char currentSymbol) {
+    // Winning combinations
+    int winPatterns[8][3] = {
+        {1, 2, 3}, {4, 5, 6}, {7, 8, 9},  // Rows
+        {1, 4, 7}, {2, 5, 8}, {3, 6, 9},  // Columns
+        {1, 5, 9}, {3, 5, 7}                          // Diagonals
+    };
 
-            for (int i = 1; i < 4; i++){
-                if (array[i] == currentSymbol && array[i+3] == currentSymbol && array[i+6] == currentSymbol){
-                    printf("Congratulation! Player (%c) won! \n", toupper(currentSymbol));
-                    sleep(1);
-                    finishGame = true;
-                }
-            }
+    for (int i = 0; i < 8; i++) {
+        if (array[winPatterns[i][0]] == currentSymbol &&
+            array[winPatterns[i][1]] == currentSymbol &&
+            array[winPatterns[i][2]] == currentSymbol) {
+            system("clear");
+            printf("Congratulations! Player (%c) won!\n", toupper(currentSymbol));
+            showBoard();
+            finishGame = true;
+            return true;
+        }
+    }
+    return false;
+}
 
-            if (array[1] == currentSymbol && array[5] == currentSymbol && array[9] == currentSymbol ||
-                array[3] == currentSymbol && array[5] == currentSymbol && array[7] == currentSymbol){
-                printf("Congratulation! Player (%c) won! \n", toupper(currentSymbol));
-                sleep(1);
-                finishGame = true;
-            }
+void showBoard(){
+    printf("\n");
+    for (int i = 1; i < 10; i += 3){
+        printf("\t %c|%c|%c \n", toupper(array[i]), toupper(array[i+1]), toupper(array[i+2]));
+        printf("\t -|-|- \n");
+    }
 }
 
 int main(){
-    system("clear");
-
     char currentSymbol = 'x';
     do {
-        int selecedPlace;
+        system("clear");
 
-        printf("\n");
-        for (int i = 1; i < 10; i += 3){
-            printf("\t %c|%c|%c \n", toupper(array[i]), toupper(array[i+1]), toupper(array[i+2]));
-            printf("\t -|-|- \n");
-        }
-
+        showBoard();
         printf("\nCurrently playing (%c)", toupper(currentSymbol));
         showChoosingBoard();
+
+        int selecedPlace;
         scanf("%i", &selecedPlace);
 
         if (selecedPlace < 1 || selecedPlace > 9){
             printf("Please enter the number from table above! \n");
         }
-        else if (array[selecedPlace] == ' ' && array[selecedPlace] != currentSymbol){
+        else if (array[selecedPlace] == ' '){
             array[selecedPlace] = tolower(currentSymbol);
 
-            // Confirm state of the game
-            checkGameState(currentSymbol);
-
-            if (currentSymbol == 'x')
-                currentSymbol = 'o';
-            else
-                currentSymbol = 'x';
+            checkWin(currentSymbol);
+            currentSymbol = (currentSymbol == 'x') ? 'o' : 'x';
         }else{
             printf("That place is already occupaid \n");
         }
 
         sleep(1);
-        system("clear");
     }while (!finishGame);
 
     return 0;
