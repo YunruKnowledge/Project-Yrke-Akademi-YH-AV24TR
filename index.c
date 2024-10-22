@@ -1,29 +1,27 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
- 
+#define STRING_LENGHT 20
 
-int main(void)
-{
-    const char *s1 = "Roter";
-    char s2[6] = "Roger";
-    char *p = (char *)s1;
-    char **pp = &p;
+int main(void) {
+    unsigned char str[STRING_LENGHT] = "abccba"; 
+    int length = strlen(str); 
 
-    *pp = s2;
-    *p = 'P';
-    **pp = 'J';
-    *(*pp + 2) = 'k';
+    bool isPalindrome = true;  
 
-    printf("%s\n", p);
+    for (int i = 0; i < length / 2; i++) {  
+        if (str[i] != str[length - i - 1]) {  
+            isPalindrome = false;
+            break;
+        }
+    }
 
-    uint8_t array[4] = {1, 2, 3, 4};
-    bool a = ((void *)array == (void *)&array);
-    bool b = ((void *)(array + 1) == (void *)(&array + 1));
-
-    printf("%s ", a ? "Hello" : "Bye");
-    printf("%s!\n", b ? "Stefan" : "Linda");
+    if (isPalindrome) 
+        printf("It was infact a palindrome\n");
+    else 
+        printf("It was infact not a palindrome\n");
 
     return 0;
 }
