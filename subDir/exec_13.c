@@ -10,7 +10,7 @@ int main(void)
         const size_t lastDigit = i % 10;
         if (lastDigit == 7)
         {
-            printf("[%lu]\n", i);
+            printf("[%u]\n", i);
         }
     }
 }
