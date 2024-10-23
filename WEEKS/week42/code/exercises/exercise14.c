@@ -12,7 +12,7 @@ int main(void){
     if (theNum <= 1){
         printf("I said above 2!\n");
         goto startAgain;
-    }else if(theNum >= 11000){
+    }else if(theNum >= 10001){
         printf("I said max 10k!\n");
         goto startAgain;
     }else{

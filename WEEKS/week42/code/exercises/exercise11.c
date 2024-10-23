@@ -15,11 +15,13 @@ int main(){
     printf("enter full name:\n");
 
     while((ch = getchar()) !='\n'){
+        //while ch is getchar NOT a end of the sentence
         if (isalpha(ch)){
 
             if(isANewWord){
             putchar(toupper(ch));
             isANewWord = 0;
+            
         } else {
             putchar(tolower(ch));
         }

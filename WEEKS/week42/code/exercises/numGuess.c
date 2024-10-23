@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>//sleep
@@ -19,13 +20,18 @@ int main(){
             printf("Write the number you think is close to the secretnumber: \n");
             scanf("%d", &theGuess);
 
+            while (isalpha(theGuess)){
+                printf("Input a number!\n");
+                printf("Write the number you think is close to the secretnumber: \n");
+            scanf("%d", &theGuess);
+            }
+//add do loop above
             if (theGuess < 0 || theGuess > 99){
                 printf("Wrong, I said MAX 99 bruh.");
                 i--;
                 continue;// restart the main whileLoop 
             }
-
-            if (theGuess == secretNumber){
+            else if (theGuess == secretNumber){
                 printf("Guess what genius, you found it.\nNow what is 2*6.5?");
                 theGuess = 0;
                 // break;//exits the while loop

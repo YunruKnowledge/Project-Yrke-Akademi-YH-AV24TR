@@ -15,6 +15,7 @@ for (int i = 0; i<=theNum; i++){
 
 return 0;
 }
+
 // if (isdigit(theNum)){
 //     printf(" %i", theNum);
 // }
