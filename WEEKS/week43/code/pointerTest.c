@@ -1,7 +1,8 @@
 #include <stdio.h>
 
-char name[20] = "Go Home";
+char name[9] = "Go Home";
 char *p = name;
+
 int main(void){
 //Faroch example below
 /*
@@ -19,12 +20,15 @@ int main(void){
 //different test below
     char **pp = &p;//double asterisk,bcz im pointing to a pointer
     char ***ppp = &pp;
+
     *(**ppp+2) = 'j';
     *(**ppp+3) = 'o';
     *(**ppp+4) = ' ';
     *(**ppp+5) = ' ';
     *(**ppp+6) = 'O';
     *(**ppp+7) = 'P';
+    // *(**ppp+8) = '\0';
 
-    printf("ptrAddress: %c\nThe manipulatedName: %s\n", ***ppp, name);//The value that the pointer is pointing to.
+    printf("ptrAddress: %p\nThe manipulatedName: %s\n", pp, **ppp);//The value that the pointer is pointing to.
+return 0;
 }
