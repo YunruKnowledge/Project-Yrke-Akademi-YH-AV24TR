@@ -6,7 +6,7 @@ int main() {
     struct tm *info;
     char buffer[80];
 
-    (&rawtime);
+    time(&rawtime);
     info = localtime(&rawtime);
     
     strftime(buffer, sizeof(buffer), "Current local time and date: %Y-%m-%d %H:%M:%S", info);
