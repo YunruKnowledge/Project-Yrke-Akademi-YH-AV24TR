@@ -4,10 +4,31 @@
 
 #define SIZE 10
 
+int main(){
+int arr[SIZE];
+srand(time(0));
+//create an array of random numbers.
+for (int i = 0; i<=SIZE; i++){
+    arr[i] = rand() % 100;
+}
+
+for (int i = 0; i<=SIZE; i++){
+    printf(" %i", arr[i]);
+}
+}
+
+/*
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
 // Function to fill the array with random numbers using pointers
 void fillArray(int *arr, int size) {
     for (int i = 0; i < size; i++) {
         *(arr + i) = rand() % 100; // Random number between 0 and 99
+    //point to the array, + of i(0to10) assign a random number.
     }
 }
 
@@ -53,3 +74,4 @@ int main() {
 
     return 0;
 }
+*/
