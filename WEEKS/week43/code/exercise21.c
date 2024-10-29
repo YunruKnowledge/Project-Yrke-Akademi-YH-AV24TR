@@ -5,7 +5,7 @@
 #define SIZE 10
 
 int main(){
-int arr[SIZE];
+int *arr[SIZE];
 srand(time(0));
 //create an array of random numbers.
 for (int i = 0; i<=SIZE; i++){
