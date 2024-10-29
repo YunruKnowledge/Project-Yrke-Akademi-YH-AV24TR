@@ -17,7 +17,7 @@ int checkPrime(int num)
     return 1;
 }
 
-int main()
+int main(void)
 {
     unsigned int n, m;
 

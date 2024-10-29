@@ -8,7 +8,7 @@ int val(int addAmount, int path)
 
 void say_value(int a) { printf("Value of a is %d\n", a); }
 
-int main()
+int main(void)
 {
     int a = 5;
     char b = 's';
