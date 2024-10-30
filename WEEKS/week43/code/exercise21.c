@@ -5,38 +5,41 @@
 #define SIZE 10
 
 int main(){
+    //create an array
 int arr[SIZE];
+//Point to the array
 int *pArr = arr;
 
 srand(time(0));
-//create an array of random numbers.
-for (int i = 0; i<=(SIZE -1); i++){
+ //of random numbers.
+for (int i = 0; i < (SIZE -1); i++){
     *(pArr + i) = rand() % 100;
 }
 
 printf("The unordered list");
-for (int i = 0; i<=(SIZE -1); i++){
+for (int i = 0; i < (SIZE -1); i++){
     printf(" %i", pArr[i]);
 }
 
 //rearrange least to biggest
-int temp,letter1,letter2;
-for (int j = 0; j<=(SIZE -1); j++){
-letter1 = *(pArr + j);
-letter2 = *(pArr + (j+1));
+int temp;
+    for (int i = 0; i<SIZE -1; i++){
+        for (int j = 0; j<SIZE -1; j++){
 
-if (letter1 > letter2){
+if (*(pArr+j) > *(pArr+j+1)){
 
-    temp = letter1;
-    letter1 = letter2;
-    letter2 = temp;
-}
+    temp = *(pArr + j);
+    *(pArr+j) = *(pArr+j+1);
+    *(pArr+j+1) = temp;
 }
 
-printf("temp holds:%i\nletter1 holds: %i\nletter2 holds: %i\n", temp, letter1, letter2);
+        }
+    }
+
+printf("\ntemp holds:%i\nletter1 holds: %i\nletter2 holds: %i\n", temp, *(pArr+0), *(pArr+2));
 
 printf("The ordered list");
-for (int i = 0; i<=(SIZE -1); i++){
+for (int i = 0; i<(SIZE -1); i++){
     printf(" %i", pArr[i]);
 }
 
