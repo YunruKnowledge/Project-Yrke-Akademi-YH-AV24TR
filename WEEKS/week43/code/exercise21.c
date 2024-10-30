@@ -23,8 +23,8 @@ for (int i = 0; i < (SIZE -1); i++){
 
 //rearrange least to biggest
 int temp;
-    for (int i = 0; i<SIZE -1; i++){
-        for (int j = 0; j<SIZE -1; j++){
+    for (int i = 0; i<(SIZE -1); i++){
+        for (int j = 0; j<(SIZE -1); j++){
 
 if (*(pArr+j) > *(pArr+j+1)){
     temp = *(pArr + j);
