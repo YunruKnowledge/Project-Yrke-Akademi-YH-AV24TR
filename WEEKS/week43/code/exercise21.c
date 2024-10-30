@@ -27,12 +27,10 @@ int temp;
         for (int j = 0; j<SIZE -1; j++){
 
 if (*(pArr+j) > *(pArr+j+1)){
-
     temp = *(pArr + j);
     *(pArr+j) = *(pArr+j+1);
     *(pArr+j+1) = temp;
 }
-
         }
     }
 
