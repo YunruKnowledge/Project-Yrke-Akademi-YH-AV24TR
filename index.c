@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "Librarys/colors.h"
 
 int doLoopCalculation(int *numbers, int amountOfNumbers, char symbol);
 
@@ -7,6 +8,8 @@ int main()
     unsigned int amountOfNumbers;
     int *arrayOfInputNum;
     char character;
+
+    ShowErrorMessage("Error");
 
     do
     {
