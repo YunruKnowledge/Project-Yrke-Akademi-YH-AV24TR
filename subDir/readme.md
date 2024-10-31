@@ -2,8 +2,8 @@
 > [!NOTE]
 > *Short for exercises. **uploads meaning questions are on ItsLearning.
 
-> exec_[number_from_upload] //ordered/numbered uploads.
+> exec_[number_from_upload]_[tag] //ordered/numbered uploads.
 
-> week[due_week_number]_[year] //uploads w/ missing order number.
+> unsign[yy]_[week]_[tag] //uploads w/ missing order number.
 
-> ex[date] //exercise in class with no uploads.
+> ex[yymmdd]_[tag] //exercise in class with no uploads.
