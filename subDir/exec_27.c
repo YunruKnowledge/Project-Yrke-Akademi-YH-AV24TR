@@ -31,15 +31,20 @@ int findAvarage(const int *_array, const int _size) {
 }
 
 int findValue(const int *_array, const int _size, const int _targetVal) {
-  int _index = 0, _matchFound = -1;;
+  int _index = 0, _matchFound = -1;
   while (_index < _size) {
     if (_array[_index] == _targetVal) {
       _matchFound = _index;
       break;
     }
     _index++;
-  }       
-  printf("*** MATCH %i | INDEX %i ***\n", _array[_index], _index);
+  }
+  if (_matchFound == -1)
+    printf("*** NO MATCH %i | INDEX | INTAKE %i***\n", _array[_index], _index,
+           _targetVal);
+  else
+    printf("*** MATCH %i | INDEX %i | INTAKE %i***\n", _array[_index],
+           _matchFound, _targetVal);
   return _matchFound;
 }
 
@@ -48,14 +53,14 @@ int main(void) {
   srand(time(NULL));
   for (int i = 0; i < BUFFER; i++) {
     arr[i] = rand() % (MAX * 2) + MIN;
-  }
-
-  findLargest(arr, (sizeof(arr) / sizeof(arr[0])));
-  findAvarage(arr, (sizeof(arr) / sizeof(arr[0])));
-  findValue(arr, (sizeof(arr) / sizeof(arr[0])), 5);
-
-  for (int i = 0; i < BUFFER; i++) {
     printf("%i ", arr[i]);
   }
+  printf("\n");
+
+  int arrSize = (sizeof(arr) / sizeof(arr[0]));
+  findLargest(arr, arrSize);
+  findAvarage(arr, arrSize);
+  findValue(arr, arrSize, 3);
+
   return 0;
 }
