@@ -27,6 +27,8 @@ char SetBGHighIntenstyColor(enum usableColors color);
 
 char ResetColors();
 
+char ShowErrorMessage(char *massage);
+
 #include <stdio.h>
 #include "color.c"
 #endif

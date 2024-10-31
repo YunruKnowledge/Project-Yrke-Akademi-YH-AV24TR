@@ -1,3 +1,4 @@
+#include "colors.h"
 char SetTextColor(enum usableColors color) {
   if (color == red)
     return printf("\033[31m");
@@ -181,3 +182,9 @@ char SetBGHighIntenstyColor(enum usableColors color) {
 }
 
 char ResetColors() { return printf("\x1b[m"); }
+
+char ShowErrorMessage(char *massage){
+  SetTextHighIntenstyColor(red);
+  printf("%s \n", massage);
+  ResetColors();
+}
