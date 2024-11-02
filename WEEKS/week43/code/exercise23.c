@@ -3,7 +3,6 @@ Description
 Make a program to fill a 2D array (2x3) of type int with random numbers in the range of 0 and 99 and then print the array to the terminal.
 
 To fill and print the array, use only pointers.
-
 */
 #include <stdio.h>
 #include <time.h>
@@ -15,7 +14,7 @@ To fill and print the array, use only pointers.
 int main(void)
 {
     int twoDarr[NUM1][NUM2]; // 2darray 111111111*111111111*1111111111
-    int *p = &twoDarr[0][0];
+    int *p = &twoDarr[0][0];//int pointer to two dimensional arrays address.
     srand(time(NULL)); // seed random of time(0)
 /*
     for (int i = 0; i <= 6; i++)
