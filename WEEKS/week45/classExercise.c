@@ -6,7 +6,7 @@ int strLength(char *pArr);
 
 int main(void)
 {
-    char arr[] = "name";
+    char arr[70];
 
     printf("Write a name:\n");
     scanf(" %s", arr);
@@ -16,17 +16,16 @@ int main(void)
 
     return 0;
 }
+
 int strLength(char *pArr)
 {
     int sizeArr = 0;
-    int i = 0;
 
-    while ( pArr[i] != '\0')
+    while ( pArr[sizeArr] != '\0')
     {
         sizeArr++;
-        i++;
     } 
-    printf("The i: %i\nThe sizeArr: %i\n", i, sizeArr);
+    printf("The sizeArr: %i\n", sizeArr);
 
     return sizeArr;
 }
