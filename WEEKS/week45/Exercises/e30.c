@@ -10,10 +10,37 @@ Description
 
                       void say_value(int a) { printf("Value of a is %d\n", a); }
 */
-
 #include <stdio.h>
 
-int main(void){
+void add5(int *x);
+void say_value(int a);
+
+int main(void)
+{
+
+    int a = 5;
+    char b = 's';
+
+    int *pa = &a;
+    char *pb = &b;
+
+    *pa = 8;
+    *pb = 'b';
+
+    printf("Pointer A is: %i || Pointer B is: %c", *pa, *pb);
+
+    void (*funcPtr[])(int a) = {say_value};
+    
+    funcPtr[0](a);
 
     return 0;
+}
+
+void add5(int *x)
+{
+    x += 5;
+}
+void say_value(int a)
+{
+    printf("\nValue of a is %d\n", a);
 }
