@@ -3,30 +3,43 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define N 20
-
+#define N 9
+// bir type yaptim, compare t atinda bir pointer.
 typedef bool (*compare_t)(int a, int b);
-typedef bool (*compare_asc)(int a, int b);
-typedef bool (*compare_des)(int a, int b);
 
 // void sort_array(int *arr, compare_t compare); !!OG!!
-void sort_array(int *arr, compare_t compare, compare_asc ascend, compare_des descend);
+void sort_array(int *arr, compare_t compare);
 
 void fillRndm(int *arr);
 void consolePrint(int *arr);
 void swpvars(int *a, int *b);
-void cmprNum(int *a, int *b);
+// void cmprNum(int *a, int *b);
+
+bool compare_asc(int a, int b) { return a > b; };
+bool compare_des(int a, int b) { return a < b; };
 
 int main(void)
 {
     int nArr[N];
 
-    int choice = 0;
-    //ASK user for choice!!!
-    
-    sort_array(nArr, cmprNum);
+    fillRndm(nArr);
+    sort_array(nArr, compare_des);
+    consolePrint(nArr);
 
-    // to ascend 0, descend 1;
+    // // Fill array with random values
+    //     fillRndm(nArr, N);
+    //     printf("Original array:\n");
+    //     consolePrint(nArr, N);
+
+    //     // Sort descending and print
+    //     printf("\nSorted descending:\n");
+    //     sort_array(nArr, N, compare_des);
+    //     consolePrint(nArr, N);
+
+    //     // Sort ascending and print
+    //     printf("\nSorted ascending:\n");
+    //     sort_array(nArr, N, compare_asc);
+    //     consolePrint(nArr, N);
 
     return 0;
 }
@@ -37,76 +50,37 @@ void fillRndm(int *arr)
 
     for (int i = 0; i < N; i++)
     {
-        arr[i] = rand() % 10;
+        arr[i] = rand() % 100;
     }
 }
 
 void consolePrint(int *arr)
 {
+    printf("\n");
     for (int i = 0; i < N; i++)
     {
-        printf("%i", arr[i]);
+        printf(" %i ", arr[i]);
     }
+    printf("\n");
 }
 
 void swpvars(int *a, int *b)
 {
-    int temp = a;
-    a = b;
-    b = temp;
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-void asc(int *a, int *b)
+void sort_array(int *arr, compare_t compare)
 {
-    int temp;
-    if (a > b)
+    for (int i = 0; i < N - 1; i++)
     {
-        temp = a;
-        a = b;
-        b = temp;
-    }
-}
-
-void dec(int *a, int *b)
-{
-    int temp;
-    if (a < b)
-    {
-        temp = a;
-        a = b;
-        b = temp;
-    }
-}
-
-void cmprNum(int *a, int *b)
-{
-    if (a == b)
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
-}
-
-void sort_array(int *arr, compare_t compare, compare_asc ascend, compare_des descend)
-{
-
-    for (int i = 0; i < N; i++)
-    {
-        if (choice == 0)
+        for (int j = 0; j < N - i - 1; j++)//J tam sayidan az oldugunca
         {
-            ascend(arr[i], arr[i + 1]);
-        }
-        else if (choice == 1)
-        {
-            /*temp = arr[i];
-            arr[i] = arr[i + 1];
-            arr[i + 1] = temp;
-            */
-            // swpv1ars(arr[i], arr[i + 1]);
-            descend(arr[i], arr[i + 1]);
+            if (compare(arr[j], arr[j + 1]) == 0) // if a > b
+            {
+                swpvars(&arr[j], &arr[j + 1]);
+            }
         }
     }
 }
