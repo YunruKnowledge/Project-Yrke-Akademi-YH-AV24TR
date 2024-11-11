@@ -1,37 +1,38 @@
 #include <stdio.h>
 
-#define FORMAT "YYMMDD-nnnC"
-#define SOCIAL_DIGIT_AMOUNT 10
+#define LUHN_MODULUS 10
 #define INPUT_BUFFER 11
 #define BUFFER_AMOUNT_WITHOUT_CONTROL 10
 #define EVEN 2
 #define INVALID -1
-#define RESET 0
+#define IGNORE 0
 #define LAST_DECIMAL_DIGIT 9
 
-#define LIMIT_YEAR 9999u
-#define LIMIT_MONTH 12u
-#define LIMIT_DAY 31u
-#define FIRST_DATE 1u
-enum MONTH_NAMES {
-  JANUARY = 1,
-  FEBRUARY,
-  MARCH,
-  APRIL,
-  MAY,
-  JUNE,
-  JULY,
-  AUGUST,
-  SEPTEMBER,
-  OCTOBER,
-  NOVEMBER,
-  DECEMBER
-};
-#define MONTH_DAY_MODIFIER                                                     \
-  { 0, -3, 0, -1, 0, -1, 0, 0, -1, 0, -1, 0 }
+#define FORMAT "YYMMDD-nnnC"
+#define FORMAT_TOTAL 5
+#define YY 99
+#define YEAR_DiFFERENTIAL 30
+#define FIRST_YEAR 0
+#define MM 12
+#define DD 31
+#define FIRST_DATE 1
+#define MONTH_DAY_MODIFIER {0, -3, 0, -1, 0, -1, 0, 0, -1, 0, -1, 0}
+#define MONTH_DAY_MODIFIER_BUFFER 12
+
+#define FEBRUARY 2
+#define LEAP_FEBRUARY_MODIFIER -2
+#define CENTURY 100
+#define LEAP 4
+#define LEAP_CENTURY 400
+
+#define TWENTY_FIRST_CENTURY 2000
+#define TWENTYTH_CENTURY 1900
 
 int charNumberToInt(const char _char);
 int verifySocialString(const char *_string);
+int verifyStringFormat(const char *_string);
+int convertToFullYear(const int _year_two_digit);
+int isLeapYear(const int _year);
 
 /**
  * @brief Program to ask and verify a Social Security number.
@@ -41,22 +42,20 @@ int verifySocialString(const char *_string);
 int main(void) {
   char _inputString[INPUT_BUFFER];
 
+  (void)printf("Please enter your social security number.\n(%s)\n ", FORMAT);
+
   char _letter;
   unsigned int _index = 0;
-  while (_index < INPUT_BUFFER) {
+  while (_index < INPUT_BUFFER && _letter != '\n' && _letter != EOF) {
     _letter = getchar();
     _inputString[_index] = _letter;
-    // printf("%c - %i - %i\n", _letter, charNumberToInt(_letter),
-    //        _inputIntArray[_index]);
     _index++;
   }
 
-  // ***verify format l8r
-
-  if (verifySocialString(_inputString)) {
-    printf("Valid Social Security Number!");
+  if (verifyStringFormat(_inputString) && verifySocialString(_inputString)) {
+    (void)printf("Valid Social Security Number!");
   } else {
-    printf("This is not a valid Social Security Number.");
+    (void)printf("This is not a valid Social Security Number.");
   }
 
   return 0;
@@ -77,8 +76,7 @@ int charNumberToInt(const char _char) {
 }
 
 /**
- * @brief Verify Social Security Number using the Luhn Algorithm provided by
- * PDF.
+ * @brief Verify Social Security Number using the Luhn Algorithm.
  *
  * @param _string
  * @return int
@@ -91,29 +89,88 @@ int verifySocialString(const char *_string) {
 
     // step 1, alternately multiply digits with 2 and 1.
     if (_digit == (INVALID)) {
-      _digit = RESET; // skip, and set zero.
+      _digit = IGNORE;
     } else if (_order % EVEN == 0) {
       _digit *= 2;
       _order++;
     } else {
-      // * 1 is same result
       _order++;
     }
 
-    // step 2, sum idividual digits if _digit is more than one.
+    // step 2, sum idividual digits and if _digit has more than one.
     if (_digit > LAST_DECIMAL_DIGIT) {
       int _tenth = _digit / 10;
       int _tenthRemainder = _digit % 10;
       _digit = _tenth + _tenthRemainder;
     }
 
-    // step 3, sum into total.
     _total += _digit;
   }
 
-  // step 4, control - compare with C in format.
-  int _control = (SOCIAL_DIGIT_AMOUNT - (_total % SOCIAL_DIGIT_AMOUNT)) %
-                 SOCIAL_DIGIT_AMOUNT;
+  // step 3, control - compare with C in format.
+  int _control = (LUHN_MODULUS - (_total % LUHN_MODULUS)) % LUHN_MODULUS;
 
-  return (charNumberToInt(_string[SOCIAL_DIGIT_AMOUNT]) == _control);
+  return (charNumberToInt(_string[LUHN_MODULUS]) == _control);
+}
+
+/**
+ * @brief Converts a string into integers based on format, then verify ints with
+ * max and min year, month, day. -And leap year.
+ *
+ * @param _string
+ * @return int
+ */
+int verifyStringFormat(const char *_string) {
+  int _year, _month, _day, _number, _control;
+  const int dayModifier[MONTH_DAY_MODIFIER_BUFFER] = MONTH_DAY_MODIFIER;
+  if (sscanf(_string, "%2d%2d%2d-%3d%d", &_year, &_month, &_day, &_number,
+             &_control) != FORMAT_TOTAL) {
+    // if string is not following format.
+    return 0;
+  } else if (_year > YY || _year < FIRST_YEAR || _month > MM ||
+             _month < FIRST_DATE || _control > LAST_DECIMAL_DIGIT) {
+    // if year or month or control exceed max or min.
+    return 0;
+  } else if (isLeapYear(convertToFullYear(_year))) {
+    if (_month == FEBRUARY && _day > (DD + LEAP_FEBRUARY_MODIFIER)) {
+      // if leap month and exceed leap day.
+      return 0;
+    } else if ((_day > (DD + dayModifier[_month]))) {
+      // if exceed day max (no leap day)
+      return 0;
+    }
+  } else if (_day > (DD + dayModifier[_month])) {
+    // if exceed day max (no leap year)
+    return 0;
+  }
+
+  return 1;
+}
+
+/**
+ * @brief Check if inputted year is a leap year.
+ *
+ * @param _year
+ * @return int
+ */
+int isLeapYear(const int _year) {
+  if ((_year % LEAP == 0 && _year % CENTURY != 0) ||
+      _year % LEAP_CENTURY == 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+/**
+ * @brief Converts a two digit year date into a four digits. Only 1900 between
+ * 2000.
+ *
+ * @param _year_two_digit
+ * @return int
+ */
+int convertToFullYear(const int _year_two_digit) {
+  return (_year_two_digit >= YEAR_DiFFERENTIAL && _year_two_digit <= YY)
+             ? (TWENTYTH_CENTURY + _year_two_digit)
+             : (TWENTY_FIRST_CENTURY + _year_two_digit);
 }
