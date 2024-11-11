@@ -35,7 +35,7 @@ int convertToFullYear(const int _year_two_digit);
 int isLeapYear(const int _year);
 
 /**
- * @brief Program to ask and verify a Social Security number.
+ * @brief Program to ask and verify a Social Security number. Using only stdio.h
  *
  * @return int
  */
