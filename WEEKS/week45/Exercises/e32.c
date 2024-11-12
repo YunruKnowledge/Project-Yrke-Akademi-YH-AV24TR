@@ -23,23 +23,8 @@ int main(void)
     int nArr[N];
 
     fillRndm(nArr);
-    sort_array(nArr, compare_des);
+    sort_array(nArr, compare_asc);
     consolePrint(nArr);
-
-    // // Fill array with random values
-    //     fillRndm(nArr, N);
-    //     printf("Original array:\n");
-    //     consolePrint(nArr, N);
-
-    //     // Sort descending and print
-    //     printf("\nSorted descending:\n");
-    //     sort_array(nArr, N, compare_des);
-    //     consolePrint(nArr, N);
-
-    //     // Sort ascending and print
-    //     printf("\nSorted ascending:\n");
-    //     sort_array(nArr, N, compare_asc);
-    //     consolePrint(nArr, N);
 
     return 0;
 }
