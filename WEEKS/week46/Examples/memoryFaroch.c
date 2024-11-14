@@ -6,9 +6,9 @@
  *        2) Make a function to free a person
  * @version 0.1
  * @date 2021-03-09
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 #include <stdio.h>
@@ -55,9 +55,12 @@ int main(void)
 
 static void free_person(person_t **person)
 {
-    free((*person)->name);
-    free(*person);
-    *person = NULL;
+    if (*person != NULL)
+    {
+        free((*person)->name);
+        free(*person);
+        *person = NULL;
+    }
 }
 
 static person_t *create_person(const char *name, uint8_t age)
@@ -66,15 +69,15 @@ static person_t *create_person(const char *name, uint8_t age)
     if (ptr != NULL)
     {
         ptr->age = age;
-        size_t len = strlen(name) + 1;
+        size_t len = strlen(name) + 1;//plus 1 for the end char '/0'
         ptr->name = (char *)malloc(len * sizeof(char));
         if (ptr->name != NULL)
         {
-            strncpy(ptr->name, name, len);
+            strncpy(ptr->name, name, len);// strand num copy string to another var.
         }
         else
         {
-            free(ptr);
+            free(ptr);//if soemthings wrong, free ptr.
             ptr = NULL;
         }
     }

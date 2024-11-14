@@ -9,21 +9,18 @@
 #define DAYS 12
 
 int dateChecker(int year, int months, int day);
+int validatePersonnummer(const char *personnummer);
 int theLuhn(const char *number);
 
-int main(void)
-{
+int main() {
+    char personnummer[11];
+    printf("Enter personnummer (YYMMDDNNNN): ");
+    scanf("%10s", personnummer);
 
-    char personNum[11];
-    printf("Enter personNum (YYMMDDNNNN): ");
-    scanf("%10s", personNum);
-
-    if (validatepersonNum(personNum))
-        printf("Valid personNum.\n");
+    if (validatePersonnummer(personnummer))
+        printf("Valid personnummer.\n");
     else
-        printf("Invalid personNum.\n");
-
-    return 0;
+        printf("Invalid personnummer.\n");
 
     return 0;
 }
@@ -38,8 +35,7 @@ int dateChecker(int year, int months, int day)
     // if month is less than 1 ORR more than 12 its worng.
     if (months <= 0 || months >= 13)
     {
-        return 0;
-        printf("Wrong details!");
+        return 1;
     }
     // check for leap year because of february
     else if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
@@ -57,49 +53,29 @@ int theLuhn(const char *number)
 
     for (int i = length - 1; i >= 0; i--)
     {
-
-    }
-}
-
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-int isValidDate(int year, int month, int day) {
-    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    if (month < 1 || month > 12)
-        return 0;
-    if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
-        daysInMonth[1] = 29; // Leap year check
-
-    return (day > 0 && day <= daysInMonth[month - 1]);
-}
-
-int luhnChecksum(const char *number) {
-    int sum = 0;
-    int length = strlen(number);
-    int doubleUp = 1;
-
-    for (int i = length - 1; i >= 0; i--) {
-        if (!isdigit(number[i])) return 0;
-
-        int digit = number[i] - '0';
-        if (doubleUp) {
-            digit *= 2;
-            if (digit > 9) digit -= 9;
+        if (!isdigit(number[i]))
+        {
+            return 0;
         }
-        sum += digit;
-        doubleUp = !doubleUp;
+        int digit = number[i] - '0'; //
+        if (num)
+        {
+            digit *= 2;
+            if (digit > 9)
+            {
+                digit -= 9;
+            }
+            sum += digit;
+            num = !num;
+        }
+        return (sum % 10 == 0);
     }
-    return (sum % 10 == 0);
 }
 
-int validatePersonnummer(const char *personnummer) {
-    if (strlen(personnummer) != 10) return 0;
+int validatePersonnummer(const char *personnummer)
+{
+    if (strlen(personnummer) != 11)
+        return 0;
 
     char dateStr[7];
     strncpy(dateStr, personnummer, 6);
@@ -109,20 +85,7 @@ int validatePersonnummer(const char *personnummer) {
     int month = (atoi(dateStr) % 10000) / 100;
     int day = atoi(dateStr) % 100;
 
-    if (!isValidDate(year, month, day)) return 0;
-    return luhnChecksum(personnummer);
+    if (!isValidDate(year, month, day))
+        return 0;
+    return theLuhn(personnummer);
 }
-
-int main() {
-    char personnummer[11];
-    printf("Enter personnummer (YYMMDDNNNN): ");
-    scanf("%10s", personnummer);
-
-    if (validatePersonnummer(personnummer))
-        printf("Valid personnummer.\n");
-    else
-        printf("Invalid personnummer.\n");
-
-    return 0;
-}
-*/
