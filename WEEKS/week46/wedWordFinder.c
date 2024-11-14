@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUFFER 50
+#define BUFFER 99
 #define FILE_NAME "text.txt"
 
 int main(void)
