@@ -38,7 +38,7 @@ static uint8_t checkStringLength(const uint8_t *_string);
  * Received message is uint8_t, max 14 elements.
  * Uses CRC-15 CAN. (C599)
  * Processes first to last elements, LSB to MSB.
- * Uses bitshifting for conversion, read etc.
+ * Uses bitwise operators for conversion, read etc.
  *
  * @return int
  */
