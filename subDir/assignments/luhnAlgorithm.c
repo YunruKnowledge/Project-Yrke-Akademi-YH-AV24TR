@@ -135,31 +135,31 @@ int verifySocialString(const char *_string) {
  * @return int
  */
 int verifyStringFormat(const char *_string) {
-  int _year, _month, _day, _number, _control;
+  int _year, _month, _day, _number, _control, _isValid = 1;
   const int dayModifier[MONTH_DAY_MODIFIER_BUFFER] = MONTH_DAY_MODIFIER;
   if (sscanf(_string, "%2d%2d%2d-%3d%d", &_year, &_month, &_day, &_number,
              &_control) != FORMAT_TOTAL) {
     // if string is not following format.
-    return 0;
+    _isValid = 0;
   } else if (_year > YY || _year < FIRST_YEAR || _month > MM ||
              _month < FIRST_DATE || _control > LAST_DECIMAL_DIGIT) {
     // if year or month or control exceed max or min.
-    return 0;
+    _isValid = 0;
   } else if (isLeapYear(convertToFullYear(_year))) {
     if ((_month == FEBRUARY && _day > (DD + LEAP_FEBRUARY_MODIFIER)) ||
         _day < FIRST_DATE) {
       // if leap month and exceed leap day.
-      return 0;
+      _isValid = 0;
     } else if ((_day > (DD + dayModifier[_month]) || _day < FIRST_DATE)) {
       // if exceed day max (no leap day)
-      return 0;
+      _isValid = 0;
     }
   } else if (_day > (DD + dayModifier[_month]) || _day < FIRST_DATE) {
     // if exceed day max (no leap year)
-    return 0;
+    _isValid = 0;
   }
 
-  return 1;
+  return _isValid;
 }
 
 /**
