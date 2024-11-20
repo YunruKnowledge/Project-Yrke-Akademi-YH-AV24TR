@@ -85,7 +85,7 @@ int validatePersonnummer(const char *personnummer)
     int month = (atoi(dateStr) % 10000) / 100;
     int day = atoi(dateStr) % 100;
 
-    if (!isValidDate(year, month, day))
+    if (!dateChecker(year, month, day))
         return 0;
     return theLuhn(personnummer);
 }

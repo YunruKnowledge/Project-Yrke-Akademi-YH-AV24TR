@@ -3,16 +3,22 @@
 #include <ctype.h>
 #include <stdio.h>
 
+/**
+ * @brief A program to check for Personnummer validation. Takes in numbers and the calc is done over 10 digits, a dash is also able to be taken. But in an else if statement it is ignored.
+ * the last digit is a control digit to check/validate.
+ * 
+ */
+
 #define BUFFER 12
 
 // Prototypes below
-// validate card, take pointer of chars.
+// validate card, take pointer of the chars.
 bool validateNum(char *perNum);
 
 int main()
 {
     char userInput[BUFFER];
-    printf("Input a personnummer:\n");
+    printf("Input a personnummer in format YYMMDD-NNNN:\n");
     scanf(" %s", userInput);
 
     printf("Personnummer is: %s\nAnd its a %s", userInput, validateNum(userInput) ? "Valid number" : "Invalid number!");
@@ -24,13 +30,6 @@ int main()
 bool validateNum(char *perNum)
 {
     int length = 0; // Length of the personnummer.
-    // while (perNum[length] != '\0')
-    // {
-    //     // To find the length of the string/input, add 1 to the length until we find the Null char that ends or show that the string is ended.
-    //     length++;
-    // }
-
-    // int numHolder = 0;
     // total after everything is done.
     int total = 0;
     // Luhn Algorithm needs this. for determining position parity.
@@ -83,43 +82,5 @@ bool validateNum(char *perNum)
 
     //if the the total modulus to 10 returns 0 everything is correct. The number is valid.
     return total % 10 == 0;
-    /*
-        // a loop to start from right digit, and end at the leftmost number, which most likely is a 1 or 2.
-        for (int i = length - 1; i >= 0; i--)
-        {
-
-            // check if the num we look at is a number with a library.
-            if (isdigit(perNum[i]) == false)
-            {
-                return false;
-            }
-            else if (perNum[i] == '-')
-            {
-                continue;
-            }
-
-            // converts the number from string to a INTEGER!
-            numHolder = perNum[i] - '0';
-
-            // if the i mod 2 is equal to oddOrEven, *= numHolder by 2.
-            // and if numHolder is more than 9, -= oddOrEven by 9.
-            if (i % 2 == oddOrEven)
-            {
-                numHolder *= 2;
-
-                if (numHolder > 9)
-                {
-                    numHolder -= 9;
-                }
-            }
-            total += numHolder;
-        }
-
-        // if (total % 10 == 0)
-        // {
-        //     return true;
-        // }
-        return total % 10 == 0;
-
-        */
+   
 }
