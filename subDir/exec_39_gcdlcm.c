@@ -10,50 +10,34 @@
  */
 
 #include "exec_39_gcdlcm.h"
+static void swap(char *_string, const size_t _index);
 
-/**
- * @brief Least Common Multiple, the smallest positive integer that is divisible
- * by both a and b.
- *
- * @param _value_one
- * @param _value_two
- * @return 5
- */
 uint_t LCM(const uint_t _value_one, const uint_t _value_two) {
-  uint_t _lcm = 0;
-  for (uint_t a = 0; a < sizeof(uint_t) * 8; a++) {
-    if (_lcm)
-      break;
-    for (uint_t b = 0; b < sizeof(uint_t) * 8; b++) {
-      if (_value_one * a == _value_two * b) {
-        _lcm = _value_one * a;
-      } else if (_value_one * a < _value_two * b) {
+  uint_t _value = 0;
+  if (_value_one > 0 && _value_two > 0) {
+    for (uint_t a = 0; a < sizeof(uint_t) * 8; a++) {
+      if (_value)
         break;
+      for (uint_t b = 0; b < sizeof(uint_t) * 8; b++) {
+        if (_value_one * a == _value_two * b) {
+          _value = _value_one * a;
+        } else if (_value_one * a < _value_two * b) {
+          break;
+        }
       }
     }
   }
-  return _lcm;
+  return _value;
 }
 
-/**
- * @brief Greatest Common Divisor Calculator, GCD(a,b) = (a * b) / LCM(a,b)
- *
- * @param _value_one
- * @param _value_two
- * @return unsigned int
- */
 uint_t GCD(const uint_t _value_one, const uint_t _value_two) {
-  return (_value_one * _value_two) / LCM(_value_one, _value_two);
+  uint_t _value = 0;
+  if (_value_one > 0 && _value_two > 0) {
+    _value = (_value_one * _value_two) / LCM(_value_one, _value_two);
+  }
+  return _value;
 }
 
-/**
- * @brief Sorts a string alphbetically with special characters first.
- * ENG ASCII only. Uppercase before lowercase.
- *
- * @param _string
- * @param _size
- * @param _verbal
- */
 void stringAplhaSort(char *_string, const size_t _size,
                      const short int _verbal) {
   int _continue = 1;
@@ -125,7 +109,7 @@ void stringAplhaSort(char *_string, const size_t _size,
  * @param _string
  * @param _index
  */
-void swap(char *_string, const size_t _index) {
+static void swap(char *_string, const size_t _index) {
   const char _temp = _string[_index];
   _string[_index] = _string[_index + 1];
   _string[_index + 1] = _temp;
