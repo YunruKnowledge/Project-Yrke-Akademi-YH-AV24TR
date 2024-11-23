@@ -32,8 +32,6 @@ use static fule scope objects.
 ### abstract data type
 ``` #ifndef MODULE_H #define MODULE_H //forward declaration typedef strucct data data_t  #endif /* MODULE_H  */ ```
 
----
-
 ```Only pointers that point to incomplete type can be defined and passed around. 
 
 ### For private module, use STATIC in the sourceFile.c

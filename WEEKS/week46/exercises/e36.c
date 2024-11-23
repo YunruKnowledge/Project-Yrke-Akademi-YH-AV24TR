@@ -9,13 +9,11 @@ Then the program shall print all the persons to the output.
 In the end the program shall release all the dynamically allocated memory.
 
 */
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 
 typedef struct
-
 {
     char *name;
 
@@ -31,16 +29,28 @@ int main(void)
 
     while (length < 1)
     {
-        (void)printf("Evter length of the array: \n");
+        (void)printf("Enter length of the array: \n");
         (void)scanf("%u", &length);
         clear_buffer();
     }
 
     // Array to hold the structs.
-    // a pointer of type that struct, that points to a block of memory, that has the size of the struct, TIMES the length(amount of persons)
+    // a pointer of type struct, that points to a block of memory, that has the size of the struct, TIMES the length(amount of persons)
     person_t *thePersons = (person_t *)malloc(length * sizeof(person_t));
 
     // allocate mem for this array.
+    if (thePersons == NULL)
+    {
+        (void)printf("Person could not be found in memory!");
+        exit(1);
+    }
+
+    while (thePersons->name != NULL)
+    {
+        printf("What is the name of user 1?:\n");
+        scanf(" %s", thePersons->name);
+    }
+    
 
     // ask users to enter name and age of each person.
 
