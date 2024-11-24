@@ -4,7 +4,7 @@
 #define MAX_NUM 99
 #define NUM_OF_RANDOM_NUM 5
 
-int main()
+int main(void)
 {
     int *arr = getArrayOfRandomNumbers(MIN_NUM, MAX_NUM, NUM_OF_RANDOM_NUM);
     int biggestNum = 0, avgNum = 0, findNum;

@@ -1,66 +1,36 @@
 #include <stdio.h>
-#include "Librarys/colors.h"
+#include <stdlib.h>
 
-int doLoopCalculation(int *numbers, int amountOfNumbers, char symbol);
-
-int main()
+int main(void)
 {
-    unsigned int amountOfNumbers;
-    int *arrayOfInputNum;
-    char character;
+    int length;
 
-    ShowErrorMessage("Error");
+    printf("Enter the size of array: ");
+    if (scanf("%d", &length) == 0)
+        return 1;
 
-    do
+    int *array = (int *)malloc(length * sizeof(int));
+
+    for (int i = 1; i < length; i++)
     {
-        (void)printf("Lets do some Calculations \n");
-        (void)printf("Please enter how many numbers you want to do calculation with: \n");
-        scanf("%d", &amountOfNumbers);
-    } while (arrayOfInputNum == 0);
-
-    for (int i = 0; i < amountOfNumbers; i++)
-    {
-        (void)printf("Enter number [%d]: ", i);
-        scanf("%d", &arrayOfInputNum[i]);
+        array[i] = array[i - 1] != 2 ? 2 : 1;
+        printf("[%d] ", array[i]);
     }
 
-    (void)printf("What type of calculation u want to do? \n");
-    (void)printf("Enter one of the for symbols[\"+\", \"-\", \"*\", \"/\"]: ");
+    printf("\nEnter the new size of array: ");
+    if (scanf("%d", &length) == 0)
+        return 1;
 
-    getchar();
-    scanf("%c", &character);
+    array = (int *)realloc(array, sizeof(int));
 
-    int sum = doLoopCalculation(arrayOfInputNum, amountOfNumbers, character);
-    for (int i = 0; i < amountOfNumbers; i++)
+    for (int i = 1; i < length; i++)
     {
-        (void)printf("%d ", arrayOfInputNum[i]);
-        if (i == amountOfNumbers - 1)
-            (void)printf(" = %d \n", sum);
-        else
-            (void) printf("%c ", character);
+        array[i] = array[i - 1] != 2 ? 2 : 1;
+        printf("[%d] ", array[i]);
     }
+
+    free(array);
+    array = NULL;
+
     return 0;
-}
-
-int doLoopCalculation(int *numbers, int amountOfNumbers, char symbol)
-{
-    int result = 0;
-    for (int i = 0; i < amountOfNumbers; i++)
-    {
-        if (i == 0)
-            result = numbers[i];
-        else
-        {
-            if (symbol == '+')
-                result += numbers[i];
-            else if (symbol == '-')
-                result -= numbers[i];
-            else if (symbol == '*')
-                result *= numbers[i];
-            else if (symbol == '/')
-                result /= numbers[i];
-        }
-    }
-
-    return result;
 }

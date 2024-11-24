@@ -1,9 +1,16 @@
 {
     "cSpell.words": [
+        "Anya",
         "funcptr",
-        "Singlplayer"
+        "personummer",
+        "Roki",
+        "Singlplayer",
+        "SORTARRAY"
     ],
     "files.associations": {
-        "colors.h": "c"
-    }
+        "colors.h": "c",
+        "grn.h": "c",
+        "demo.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

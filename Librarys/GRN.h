@@ -1,5 +1,5 @@
-#ifndef GENERATE_RANDOM_NUMBER_NUM
-#define GENERATE_RANDOM_NUMBER_NUM
+#ifndef GRN_H
+#define GRN_H
 
 int getRandomNumber(int min, int max);
 
@@ -9,4 +9,4 @@ int* getArrayOfRandomNumbers(int min, int max, int count);
 #include <stdlib.h>
 #include <time.h>
 #include "GRN.c"
-#endif // !GENERATE_RANDOM_NUMBER_NUM
+#endif // !GRN_H

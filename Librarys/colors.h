@@ -1,5 +1,5 @@
-#ifndef COLOR_LIB
-#define COLOR_LIB
+#ifndef COLORS_H
+#define COLORS_H
 
 enum usableColors {
   red,
@@ -28,6 +28,8 @@ char SetBGHighIntenstyColor(enum usableColors color);
 char ResetColors();
 
 char ShowErrorMessage(char *massage);
+
+char ShowSuccessMessage(char *massage);
 
 #include <stdio.h>
 #include "color.c"

@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <time.h>
+
 void sortArray(int *array, int length, compare_t compare)
 {
     for (int i = 0; i < length - 1; ++i)
@@ -12,6 +15,35 @@ void sortArray(int *array, int length, compare_t compare)
             }
         }
     }
+}
+
+bool checkArrayAscending(int *array, int length){
+    bool returnCheck = true;
+    for (int i = 0; i < (length - 1); i++){
+        if (array[i] <= array[i+1]){
+            returnCheck = true;
+        }
+        else{
+            returnCheck = false;
+            break;
+        }
+    }
+
+    return returnCheck;
+}
+bool checkArrayDescending(int *array, int length){
+    bool returnCheck = true;
+    for (int i = (length - 1); i > 0; i--){
+        if (array[i] >= array[i+1]){
+            returnCheck = true;
+        }
+        else{
+            returnCheck = false;
+            break;
+        }
+    }
+
+    return returnCheck;
 }
 
 void swapNum(int *a, int *b)

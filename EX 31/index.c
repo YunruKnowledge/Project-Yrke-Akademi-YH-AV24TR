@@ -8,7 +8,7 @@
 #define ROW 3
 #define COLUMNS 3
 
-int main()
+int main(void)
 {
     int *arr = getArrayOfRandomNumbers(MIN_RANDOM_NUM, MAX_RANDOM_NUM, NUM_OF_RANDOM_NUM);
     int numbers[ROW][COLUMNS];

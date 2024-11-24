@@ -188,3 +188,9 @@ char ShowErrorMessage(char *massage){
   printf("%s \n", massage);
   ResetColors();
 }
+
+char ShowSuccessMessage(char *massage){
+  SetTextHighIntenstyColor(green);
+  printf("%s \n", massage);
+  ResetColors();
+}

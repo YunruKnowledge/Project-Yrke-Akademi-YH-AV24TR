@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include "../../Librarys/colors.h"
 
 #define INT 2
 
@@ -38,7 +39,7 @@ int main(void)
             operation = divide;
             break;
         default:
-            (void)printf("Invalid input! \n");
+            (void)ShowErrorMessage("Invalid input!");
             state = false;
             break;
         }
@@ -51,7 +52,7 @@ int main(void)
     }
     else
     {
-        (void)printf("Invalid input! \n");
+        (void)ShowErrorMessage("Invalid input!");
     }
 }
 
@@ -74,7 +75,7 @@ int divide(int num1, int num2)
 {
     if (num2 == 0)
     {
-        (void)printf("Error! Cannot divide by 0");
+        (void)ShowErrorMessage("Error! Cannot divide by 0");
         return 0;
     }
     else
