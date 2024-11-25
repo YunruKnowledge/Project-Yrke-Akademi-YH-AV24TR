@@ -79,3 +79,24 @@ void shuffleChar(char *array, char length)
         swapChar(&array[i], &array[j]);
     }
 }
+
+void *sortStringAlphabeticby(char *string, const unsigned int length)
+{
+    int swap = 1;
+    int temp;
+
+    for (int i = 0; i < length && swap; i++)
+    {
+        swap = 0;
+        for (int j = 0; j < (length - 1); j++)
+        {
+            if (tolower(string[j + 1]) < tolower(string[j]))
+            {
+                temp = string[j + 1];
+                string[j + 1] = string[j];
+                string[j] = temp;
+                swap = 1;
+            }
+        }
+    }
+}

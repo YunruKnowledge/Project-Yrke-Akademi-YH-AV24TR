@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 typedef bool (*compare_t)(int, int);
 
@@ -19,6 +20,8 @@ void shuffleNum(int *array, int length);
 
 void swapChar(char *a, char *b);
 void shuffleChar(char *array, char length);
+
+void *sortStringAlphabeticby(char *string, const unsigned int length);
 
 #include "sortArray.c"
 #endif
