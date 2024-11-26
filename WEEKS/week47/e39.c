@@ -20,6 +20,8 @@ Make a test program to test the functions using assertion.
 #include <stdint.h>
 #include "e39Lib.h"
 
+#define MAX 8
+
 int main(void)
 {
     /*
@@ -45,7 +47,7 @@ int main(void)
         }
         printf("A is %i\n", a);
     */
-    char *firstString = "Arinah";
+    char firstString[MAX] = "Arinah";
     unsigned int a, b;
 
     printf("What is the value of a?\n");
