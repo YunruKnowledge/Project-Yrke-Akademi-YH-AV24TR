@@ -17,18 +17,6 @@ Use a loop to traverse the list and print the elements.
 #include <stdlib.h>
 #include "module.h"
 
-typedef struct Node
-{
-    int data;
-    struct Node *next;
-} Node_t;
-
-typedef struct linkedList
-{
-    int size;
-    Node_t *head; // point to the first node
-} linkedList_t;
-
 int main()
 {
     linkedList_t *list = createLinkedList();
