@@ -8,13 +8,10 @@ int top = 0, bottom = 0;
 
 void push(int element)
 {
-    int limit = 0;
-    if (limit <= MAX)
+    if (top < MAX)
     {
         array[top] = element;
         top++;
-
-        limit++;
     }
 }
 void pop()
@@ -22,6 +19,7 @@ void pop()
     array[top] = 0;
     top--;
 }
+
 void printStack()
 {
 
