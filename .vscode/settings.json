@@ -10,7 +10,9 @@
     "files.associations": {
         "colors.h": "c",
         "grn.h": "c",
-        "demo.h": "c"
+        "demo.h": "c",
+        "stack.h": "c",
+        "stacklist.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
