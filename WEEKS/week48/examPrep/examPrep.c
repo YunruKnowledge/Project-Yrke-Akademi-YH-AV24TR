@@ -1,23 +1,28 @@
 #include <stdio.h>
+#include <string.h>
 
 /*
     fwrite and fread for binary data reading and storing.
 */
 
 #define MAX_NAME 20
-#define MAX_STUDENTS 4
+#define MAX_STUDENTS 99
 #define FILE_NAME "studentData.bin"
 
 typedef struct student
 {
+    // 20 bytes
     char name[MAX_NAME];
+    // 6 bytes
     size_t age;
+    // 6
     size_t id;
 } student_t;
 
 student_t students[MAX_STUDENTS];
 // global variable, amount of students.
 int studentCount = 0;
+int newIdCounter = 0;
 // menu
 void displayMenu();
 // load student from the file.
@@ -33,40 +38,39 @@ void updateStudent();
 
 void deleteStudent();
 
-int main(void)
+int main()
 {
-    /* FILE *fptr = fopen("test.txt", "w");
+    loadStudentfromFile(); // Load existing records from the file at the start
 
-     if (fptr == NULL)
-     {
-         printf("Problem sir, write acccess denied!");
-     }
+    int choice;
+    while (1)
+    {
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-     char str[] = "FUMOS ARE BEST";
-     int age = 21;
-
-     // write into the file.
-     fprintf(fptr, "The string: %s\nThe age: %i", str, age);
-     fclose(fptr);
-
-     FILE *fptrr = fopen("test.txt", "r");
-
-     if (fgets(str, 14, fptrr) != NULL)
-     {
-         // fputs(str, stdout);
-         printf("%s", str);
-     }
-
-     fclose(fptrr);
- */
-    student_t student1;
-
-    createUser();
-    createUser();
-
-    readStudents();
-
-    return 0;
+        switch (choice)
+        {
+        case 1:
+            createUser();
+            break;
+        case 2:
+            readStudents();
+            break;
+        case 3:
+            updateStudent();
+            break;
+        case 4:
+            deleteStudent();
+            break;
+        case 5:
+            saveToFile(); // Save records to the file before exiting
+            printf("Exiting program. Goodbye!\n");
+            return 0;
+        default:
+            printf("Invalid choice. Please try again.\n");
+        }
+    }
 }
 
 void loadStudentfromFile()
@@ -81,7 +85,7 @@ void loadStudentfromFile()
     // int oldugu icin &addressi veriliyor.
     fread(&studentCount, sizeof(int), 1, file);
     // fread(stores data in the students array, reads bytes equal to the size of a Student struct)
-    fread(students, sizeof(students), studentCount, file);
+    fread(students, sizeof(student_t), studentCount, file);
 
     fclose(file);
 }
@@ -95,15 +99,11 @@ void saveToFile()
         printf("ERROR -> File doesn't exist!");
         return;
     }
-    else
-    {
-        printf("File created!");
-    }
 
     // write into the file the amount of students.
     fwrite(&studentCount, sizeof(int), 1, file);
     // write into the file the structs of students.
-    fwrite(students, sizeof(students), studentCount, file);
+    fwrite(students, sizeof(student_t), studentCount, file);
 
     fclose(file);
 }
@@ -121,10 +121,10 @@ void createUser()
     tempStudent.id = studentCount + 1;
 
     printf("Enter student name:\n");
-    scanf("%[^\n]", tempStudent.name); // to take in he spaces too.
+    scanf(" %[^\n]", tempStudent.name); // to take in he spaces too.
 
     printf("Enter student age:\n");
-    scanf(" %d", &tempStudent.age);
+    scanf(" %lu", &tempStudent.age);
 
     students[studentCount] = tempStudent;
     studentCount++;
@@ -141,18 +141,18 @@ void readStudents()
         return;
     }
 
-    for (int i = 0; i <= MAX_STUDENTS; i++)
+    printf("\n~~~STUDENTS~~~\n");
+    for (int i = 0; i < studentCount; i++)
     {
-        printf("\n~~~STUDENTS~~~\n");
-        printf("\t\nID: %u\nName: %s\nAge: %u\n\n", students[i].id, students[i].name, students[i].age);
+        printf("\t\nID: %lu\nName: %s\nAge: %lu\n\n", students[i].id, students[i].name, students[i].age);
     }
 }
 
 void updateStudent()
 {
-    int id;
+    size_t id;
     printf("Enter ID of the student you want to update");
-    scanf("%d", &id);
+    scanf("%lu", &id);
 
     if (id < 1 || id > studentCount)
     {
@@ -163,7 +163,7 @@ void updateStudent()
     printf("Enter new name:\n");
     scanf(" %[^\n]", students[id - 1].name);
     printf("Enter new age:\n");
-    scanf("%d", &students[id - 1].age);
+    scanf(" %lu", &students[id - 1].age);
 
     printf("Updated to new credantials succcesfully!");
 
@@ -172,7 +172,25 @@ void updateStudent()
 
 void deleteStudent()
 {
-    
+    int id;
+    printf("Give id");
+    scanf(" %d", &id);
+
+    if (id < 1 || id > studentCount)
+    {
+        printf("Out of the limits");
+        return;
+    }
+
+    // id 1, [id 2], id 3,
+    // take id, one step less,
+    for (int i = id - 1; i < studentCount - 1; i++)
+    {
+        students[i] = students[i + 1];
+    }
+
+    studentCount--;
+    saveToFile();
 }
 
 void displayMenu()
@@ -184,3 +202,4 @@ void displayMenu()
     printf("4. Delete Student Record\n");
     printf("5. Exit\n");
 }
+
