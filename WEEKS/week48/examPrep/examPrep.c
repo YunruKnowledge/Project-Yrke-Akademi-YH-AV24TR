@@ -1,5 +1,4 @@
 #include <stdio.h>
-// #include <assert.h>
 
 /*
     fwrite and fread for binary data reading and storing.
@@ -8,10 +7,12 @@
 #define MAX_NAME 20
 #define MAX_STUDENTS 4
 #define FILE_NAME "studentData.bin"
+
 typedef struct student
 {
     char name[MAX_NAME];
     size_t age;
+    size_t id;
 } student_t;
 
 student_t students[MAX_STUDENTS];
@@ -21,8 +22,16 @@ int studentCount = 0;
 void displayMenu();
 // load student from the file.
 void loadStudentfromFile();
-//Save the data into the document.
+// Save the data into the document.
 void saveToFile();
+
+void createUser();
+
+void readStudents();
+
+void updateStudent();
+
+void deleteStudent();
 
 int main(void)
 {
@@ -52,9 +61,10 @@ int main(void)
  */
     student_t student1;
 
-    printf("Name of the first user:\n");
-    scanf(" %s", student1.name);
-    saveToFile();
+    createUser();
+    createUser();
+
+    readStudents();
 
     return 0;
 }
@@ -68,6 +78,7 @@ void loadStudentfromFile()
         return;
     }
     // fread(AmountofStudents: 3, 4bytes, [reading]1 integer, source: file )
+    // int oldugu icin &addressi veriliyor.
     fread(&studentCount, sizeof(int), 1, file);
     // fread(stores data in the students array, reads bytes equal to the size of a Student struct)
     fread(students, sizeof(students), studentCount, file);
@@ -95,6 +106,73 @@ void saveToFile()
     fwrite(students, sizeof(students), studentCount, file);
 
     fclose(file);
+}
+
+void createUser()
+{
+    if (studentCount >= MAX_STUDENTS)
+    {
+        printf("CANNOT ADD MORE, LIMIT REACHED!");
+        return;
+    }
+
+    student_t tempStudent;
+
+    tempStudent.id = studentCount + 1;
+
+    printf("Enter student name:\n");
+    scanf("%[^\n]", tempStudent.name); // to take in he spaces too.
+
+    printf("Enter student age:\n");
+    scanf(" %d", &tempStudent.age);
+
+    students[studentCount] = tempStudent;
+    studentCount++;
+    printf("Student record has been created!");
+
+    saveToFile();
+}
+
+void readStudents()
+{
+    if (studentCount == 0)
+    {
+        printf("NO STUDENT FOUND!");
+        return;
+    }
+
+    for (int i = 0; i <= MAX_STUDENTS; i++)
+    {
+        printf("\n~~~STUDENTS~~~\n");
+        printf("\t\nID: %u\nName: %s\nAge: %u\n\n", students[i].id, students[i].name, students[i].age);
+    }
+}
+
+void updateStudent()
+{
+    int id;
+    printf("Enter ID of the student you want to update");
+    scanf("%d", &id);
+
+    if (id < 1 || id > studentCount)
+    {
+        printf("Wrong ID, Try again!");
+        return;
+    }
+
+    printf("Enter new name:\n");
+    scanf(" %[^\n]", students[id - 1].name);
+    printf("Enter new age:\n");
+    scanf("%d", &students[id - 1].age);
+
+    printf("Updated to new credantials succcesfully!");
+
+    saveToFile();
+}
+
+void deleteStudent()
+{
+    
 }
 
 void displayMenu()
