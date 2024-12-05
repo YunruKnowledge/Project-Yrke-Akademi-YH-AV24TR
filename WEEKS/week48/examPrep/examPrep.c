@@ -126,7 +126,7 @@ void createUser()
     printf("Enter student age:\n");
     scanf(" %lu", &tempStudent.age);
 
-    students[studentCount] = tempStudent;
+    students[newIdCounter] = tempStudent;
     studentCount++;
     newIdCounter++; // To get a new ID(For identification)
     printf("Student record has been created!");
@@ -173,9 +173,9 @@ void updateStudent()
 
 void deleteStudent()
 {
-    int id;
+    size_t id;
     printf("Give id");
-    scanf(" %d", &id);
+    scanf(" %lu", &id);
 
     if (id < 1 || id > studentCount)
     {
