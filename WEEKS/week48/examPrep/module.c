@@ -1,13 +1,4 @@
-#include <stdio.h>
-#include <string.h>
 
-/*
-    fwrite and fread for binary data reading and storing.
-*/
-
-#define MAX_NAME 20
-#define MAX_STUDENTS 99
-#define FILE_NAME "studentData.bin"
 
 typedef struct student
 {
@@ -19,63 +10,11 @@ typedef struct student
     size_t id;
 } student_t;
 
-student_t students[MAX_STUDENTS];
-// global variable, amount of students.
-int studentCount = 0;
-int newIdCounter = 0;
-// menu
-void displayMenu();
-// load student from the file.
-void loadStudentfromFile();
-// Save the data into the document.
-void saveToFile();
 
-void createUser();
-
-void readStudents();
-
-void updateStudent();
-
-void deleteStudent();
-
-int main()
-{
-    loadStudentfromFile(); // Load existing records from the file at the start
-
-    int choice;
-    while (1)
-    {
-        displayMenu();
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice)
-        {
-        case 1:
-            createUser();
-            break;
-        case 2:
-            readStudents();
-            break;
-        case 3:
-            updateStudent();
-            break;
-        case 4:
-            deleteStudent();
-            break;
-        case 5:
-            saveToFile(); // Save records to the file before exiting
-            printf("Exiting program. Goodbye!\n");
-            return 0;
-        default:
-            printf("Invalid choice. Please try again.\n");
-        }
-    }
-}
 
 void loadStudentfromFile()
 {
-    FILE *file = fopen(FILE_NAME, "rb"); // Every time fread or fwrite is used, the cursor is moved that many bytes(specified as the argument), ornek asagida.
+    FILE *file = fopen(FILE_NAME, "rb");
 
     if (file == NULL)
     {
