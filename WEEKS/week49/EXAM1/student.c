@@ -19,7 +19,7 @@ typedef struct student
 
 // global variable, amount of students.
 int studentCount = 0;   // total students
-int newIdCounter = 0;   // All students and deleted
+int newIdCounter = 1;   // All students and deleted
 int deletedCounter = 1; // deleted students
 
 // array of students
@@ -74,21 +74,26 @@ void createUser()
     }
 
     student_t tempStudent;
+    char tempAge[3];
 
     printf("Enter student name:\n");
     scanf(" %[^\n]", tempStudent.name); // to take in he spaces too.
 
     printf("Enter student age:\n");
-    scanf(" %lu", &tempStudent.age);
-/*
-    if (!isdigit(tempStudent.age))
+    scanf(" %s", &tempAge);
+    /**/
+
+    for (int i = 0; i <= 3; i++)
     {
-        printf("\n\n*** The input is not an age, exiting the application ***");
-        
-        exit(1);
+        if ( !isdigit(tempAge[i] ))
+        {
+            printf("\n\n*** The input is not an age, exiting the application ***");
+            exit(1);
+        }
     }
-    */
-    tempStudent.id = newIdCounter + 1; // The new student gets the available new ID.
+
+    tempStudent.age = strtoul(tempAge, NULL, 3);
+    tempStudent.id = newIdCounter; // The new student gets the available new ID.
 
     students[studentCount] = tempStudent;
     newIdCounter++; // To get a new ID(For identification)
@@ -140,20 +145,31 @@ void updateStudent()
 
 void deleteStudent()
 {
-    size_t id;
-    printf("Give id of the student to delete:\n");
-    scanf(" %lu", &id);
+    int id; // Hold ID user wants to delete.
 
-    if (id < 1 || id > studentCount)
+    printf("Give id of the student to delete:\n");
+    scanf(" %i", &id);
+
+    int index = -1;
+    for (int i = 0; i < studentCount; i++)
     {
-        printf("Out of the limits");
+        if (students[i].id == id)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        printf("The student with the id %i was not found!", id);
         return;
     }
 
     // id 1, [id 2], id 3,
     // Go one step before the given ID by the user, then starting from the, we move the ids of the other students back to the rest using for loop.
 
-    for (int i = id - 1; i < studentCount; i++)
+    for (int i = index; i < studentCount - 1; i++) // shift students left
     {
         students[i] = students[i + 1];
     }
