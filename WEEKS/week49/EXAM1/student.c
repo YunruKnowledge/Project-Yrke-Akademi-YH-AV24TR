@@ -81,7 +81,6 @@ void createUser()
 
     printf("Enter student age:\n");
     scanf(" %s", &tempAge);
-    /**/
 
     for (int i = 0; i <= 3; i++)
     {
