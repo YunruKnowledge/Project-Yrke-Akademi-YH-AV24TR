@@ -14,7 +14,7 @@ typedef struct LIST list_t;
 list_t *nodeListCreate(void);
 
 /**
- * @brief Create a node.
+ * @brief Create a node, and insert before/below larger node value.
  * 
  * @param _list Adress of list.
  * @param _value The value the node will have.
@@ -71,7 +71,7 @@ size_t nodeListGetCount(list_t *_list);
 /**
  * @brief Frees all the nodes from memory.
  *
- * @param _list Adress of list.
+ * @param _list &Adress of pointer.
  */
 void nodeListFreeAll(list_t **_list);
 

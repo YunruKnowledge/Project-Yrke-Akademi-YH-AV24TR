@@ -12,7 +12,6 @@ typedef struct LIST {
   size_t COUNT;
 } list_t;
 
-
 list_t *nodeListCreate(void) {
   list_t *_list = (list_t *)malloc(sizeof(list_t));
   if (_list) {
@@ -30,13 +29,14 @@ bool nodeListCreateNode(list_t *_list, const int _value) {
     _node->value = _value;
     _node->nextNode = NULL;
 
-    if (!_list->HEAD) {
+    if (_list->HEAD == NULL) {
       _list->HEAD = _node;
     } else {
       node_t *_temp = _list->HEAD;
-      while (_temp->nextNode) {
+      while (_temp->nextNode != NULL && _temp->nextNode->value < _value) {
         _temp = _temp->nextNode;
       }
+      _node->nextNode = _temp->nextNode;
       _temp->nextNode = _node;
     }
 
@@ -47,16 +47,24 @@ bool nodeListCreateNode(list_t *_list, const int _value) {
 }
 
 bool nodeListChange(list_t *_list, const int _value, size_t _index) {
-  size_t _whileIndex = 1;
   node_t *_currentNode = NULL;
-  if (_list) {
-    _currentNode = (_index > 0) ? _list->HEAD : NULL;
-    if (_currentNode) {
-      while ((_whileIndex < _index) && (_currentNode != NULL)) {
-        _currentNode = _currentNode->nextNode;
-        _whileIndex++;
+  if (_list != NULL) {
+    _currentNode = _list->HEAD;
+    if (_currentNode != NULL) {
+      for (size_t i = 0; i < _index; i++) {
+        if (_currentNode->nextNode == NULL) {
+          _currentNode = NULL;
+          break;
+        } else {
+          _currentNode = _currentNode->nextNode;
+        }
       }
-      _currentNode->value = _value;
+
+      node_t *_indexedNode = _currentNode->nextNode;
+      _currentNode->nextNode = _currentNode->nextNode->nextNode;
+      free(_indexedNode);
+      _list->COUNT--;
+      nodeListCreateNode(_list, _value);
     }
   }
 
@@ -131,10 +139,12 @@ bool nodeListSearchNode(list_t *_list, int *_interger, const size_t _index) {
   return (_currNode != NULL);
 }
 
-size_t nodeListGetCount(list_t *_list) { return _list->COUNT; }
+size_t nodeListGetCount(list_t *_list) {
+  return (_list == NULL) ? 0 : _list->COUNT;
+}
 
 void nodeListFreeAll(list_t **_list) {
-  if (*_list != NULL) {
+  if ((*_list) != NULL) {
     while ((*_list)->HEAD) {
       node_t *_nextNode = (*_list)->HEAD->nextNode;
       free((*_list)->HEAD);
@@ -143,6 +153,6 @@ void nodeListFreeAll(list_t **_list) {
     }
     (*_list)->COUNT = 0;
     free(*_list);
-    *_list = NULL;
+    (*_list) = NULL;
   }
 }
