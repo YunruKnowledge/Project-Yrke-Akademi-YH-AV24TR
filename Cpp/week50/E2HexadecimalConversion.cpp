@@ -1,30 +1,3 @@
-/*
-
-#include <iostream>
-#include <iomanip>
-
-struct data_t{
-    mutable int a;
-    static int b;
-};
-
-int main(void){ 
-
-    // int number = 0;
-
-    const data_t data{10,20}; //an instance of the data
-    data.a = 100;
-    data.b = 200;
-
-
-
-    usleep(1000000);
-    return 0;
-}
-
-std::hex;//bunu kullanarak convert yapti.
-
-*/
 #include <iostream>
 #include <iomanip> // For std::hex and std::setfill
 #include <limits>
