@@ -60,6 +60,14 @@ int getNewStudentID(void);
 bool readFileSize(size_t *_size_t_ptr);
 
 /**
+ * @brief Looks for matching ID.
+ * 
+ * @param _id 
+ * @return `true` upon success.
+ */
+bool readID(const size_t _id);
+
+/**
  * @brief Reads the file based on student_t chunks.
  *
  * @param _user Pointer to apply remainder student to.
@@ -70,6 +78,13 @@ bool readFileSize(size_t *_size_t_ptr);
  */
 bool readFile(student_t *_user, const size_t _amount, const size_t _offset,
               const bool _verbose);
+
+/**
+ * @brief Creates a empty file, or emptyies/overwrites an existing file.
+ * 
+ * @return `true` upon success.
+ */
+bool createFile(void);
 
 /**
  * @brief Write into bin file.

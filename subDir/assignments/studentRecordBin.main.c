@@ -6,7 +6,6 @@
 #define NO_OFFSET 0
 
 int main() {
-  (void)printf("Program start.\n");
   char input = ' ';
   size_t inputIndex = 0;
   char inputString[STRING_BUFFER];
@@ -15,12 +14,10 @@ int main() {
   bool isExiting = false;
   size_t fileSize = 0, studentAmount = 0;
   student_t student;
-  
+
   do {
     if (readFileSize(&fileSize)) {
       studentAmount = getStudentCount();
-      (void)printf("\nFILE_NAME: \"%s\" | FILE_SIZE: %lu bytes | USERS: %lu\n",
-                   FILENAME, fileSize, studentAmount);
 
       askUserOptions(&input);
 
@@ -43,8 +40,7 @@ int main() {
         student.id = getNewStudentID();
 
         if (!writeStudent(&student)) {
-          (void)printf("Student dropped... \nSTRUCT - Name: %s | Age: %i\n",
-                       student.name, student.age);
+          (void)printf("Student dropped... \n");
         }
 
       } else if (input == USER_READ) {
@@ -57,21 +53,24 @@ int main() {
           flushUserInput();
         }
 
-        (void)printf("Enter a new name. "
-                     "(No spaces. E.g. OnLINE_f4R) "
-                     "(Max. 32 chars)\n");
-        (void)printf("Name: ");
-        scanf("%32s", inputString);
+        if (readID(inputIndex)) {
+          (void)printf("Enter a new name. "
+                       "(No spaces. E.g. OnLINE_f4R) "
+                       "(Max. 32 chars)\n");
+          (void)printf("Name: ");
+          scanf("%32s", inputString);
 
-        (void)printf("Enter an age for student.\nAge: ");
-        while (scanf("%i", &inputAge) != VALID_INPUT) {
-          (void)printf("Invalid input try again.\nAge: ");
-          flushUserInput();
-        }
+          (void)printf("Enter an age for student.\nAge: ");
+          while (scanf("%i", &inputAge) != VALID_INPUT) {
+            (void)printf("Invalid input try again.\nAge: ");
+            flushUserInput();
+          }
 
-        if (!updateUser(inputIndex, inputString, inputAge)) {
-          (void)printf("Update dropped... \nSTRUCT - Name: %s | Age: %i\n",
-                       inputString, inputAge);
+          if (!updateUser(inputIndex, inputString, inputAge)) {
+            (void)printf("Update dropped... \n");
+          }
+        } else {
+          (void)printf("Failed to match ID.\nLooping to menu... \n");
         }
 
       } else if (input == USER_DELETE) {
@@ -90,9 +89,10 @@ int main() {
       }
 
     } else {
-      (void)printf("\nUnable to open file for reading.\n");
-      (void)printf("Exiting...\n");
-      isExiting = true;
+      if (!createFile()) {
+        (void)printf("Exiting...\n");
+        isExiting = true;
+      }
     }
   } while (!isExiting);
 

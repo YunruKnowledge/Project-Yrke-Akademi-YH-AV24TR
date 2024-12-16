@@ -16,3 +16,4 @@ output/
 run
 run.*
 a.out
+*.zip

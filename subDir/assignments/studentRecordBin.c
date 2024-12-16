@@ -23,24 +23,13 @@ size_t getStudentCount(void) { return STUDENT_COUNT; }
 void askUserOptions(char *_input) {
   char _temp = 0;
   unsigned int _tries = 0;
-  if (STUDENT_COUNT > 0) {
-    (void)printf("** Select an option. ******\n");
-    (void)printf("%c. Create A Student.\n", USER_CREATE);
-    (void)printf("%c. Print All students.\n", USER_READ);
-    (void)printf("%c. Update A Student.\n", USER_UPDATE);
-    (void)printf("%c. Delete a Student.\n", USER_DELETE);
-    (void)printf("%c. Exit.\n", USER_EXIT);
-    (void)printf("Input: ");
-
-  } else {
-    (void)printf("***NO DATA FOUND OR IS CORRUPTED.***\n");
-    (void)printf("***MAKE SURE FILE IS EMPTY BEFORE CREATING RECORD.***\n");
-    (void)printf("***CREATING RECORD WILL OVERWRITE FILE DATA.***\n");
-    (void)printf("Select an option.\n");
-    (void)printf("%c. Create a Student.\n", USER_CREATE);
-    (void)printf("%c. Exit.\n", USER_EXIT);
-    (void)printf("Input: ");
-  }
+  (void)printf("********* DB **********\n");
+  (void)printf("%c) Create a Student.\n", USER_CREATE);
+  (void)printf("%c) Print All students.\n", USER_READ);
+  (void)printf("%c) Update a Student.\n", USER_UPDATE);
+  (void)printf("%c) Delete a Student.\n", USER_DELETE);
+  (void)printf("%c) Exit.\n", USER_EXIT);
+  (void)printf("Input: ");
 
   while (true) {
     if (_tries > OPTION_TRIES) {
@@ -48,24 +37,32 @@ void askUserOptions(char *_input) {
       _temp = USER_EXIT;
       break;
     } else {
-      if (scanf(" %c", &_temp)) {
+      if (scanf(" %c", &_temp) == 1) {
         _temp = toupper(_temp);
-
-        if (STUDENT_COUNT == 0 &&
-            (_temp == USER_CREATE || _temp == USER_EXIT)) {
-          break;
-        } else if (_temp == USER_CREATE || _temp == USER_READ ||
-                   _temp == USER_UPDATE || _temp == USER_DELETE ||
-                   _temp == USER_EXIT) {
-          break;
+        if (STUDENT_COUNT == 0) {
+          if (_temp == USER_CREATE || _temp == USER_EXIT) {
+            break;
+          } else if (_temp == USER_READ || _temp == USER_UPDATE ||
+                     _temp == USER_DELETE) {
+            (void)printf("No students found.\n", USER_EXIT);
+            (void)printf("Input: ");
+          } else {
+            (void)printf("Invalid input try again.\nInput: ");
+          }
+        } else {
+          if (_temp == USER_CREATE || _temp == USER_READ ||
+              _temp == USER_UPDATE || _temp == USER_DELETE ||
+              _temp == USER_EXIT) {
+            break;
+          } else {
+            (void)printf("Invalid input try again.\nInput: ");
+          }
         }
         flushUserInput();
       }
+      _tries++;
     }
-    _tries++;
-    (void)printf("Invalid input try again.\nInput: ");
   }
-
   *_input = _temp;
 }
 
@@ -98,34 +95,62 @@ bool readFileSize(size_t *_size_t_ptr) {
     _isSuccess = true;
     fclose(_file);
   } else {
-    (void)printf("Could not read/find file: [%s].\n", FILENAME);
+    // (void)printf("Could not read/find file: [%s].\n", FILENAME);
   }
   return _isSuccess;
+}
+
+bool readID(const size_t _id) {
+  bool _isFound = false;
+  FILE *_file = fopen(FILENAME, "rb");
+  if (_file != NULL) {
+    student_t _user;
+    while (fread(&_user, sizeof(student_t), SINGLE, _file)) {
+      if (_user.id == _id) {
+        _isFound = true;
+        break;
+      }
+    }
+    fclose(_file);
+  }
+  return _isFound;
 }
 
 bool readFile(student_t *_user, const size_t _amount, const size_t _offset,
               const bool _verbose) {
   bool _isSuccess = false;
-  FILE *file = fopen(FILENAME, "rb");
-  if (file != NULL) {
+  FILE *_file = fopen(FILENAME, "rb");
+  if (_file != NULL) {
     if (_amount > 0 && (_amount + _offset) <= STUDENT_COUNT) {
       if (_verbose) {
         (void)printf("ID\tAge\tName\n");
         (void)printf(
             "------------------------------------------------------------\n");
       }
-      fseek(file, sizeof(student_t) * _offset, SEEK_CUR);
+      fseek(_file, sizeof(student_t) * _offset, SEEK_CUR);
       for (size_t i = 0; i < _amount; i++) {
-        fread(_user, sizeof(student_t), SINGLE, file);
+        fread(_user, sizeof(student_t), SINGLE, _file);
         if (_verbose) {
           (void)printf("%d\t%u\t%s\n", _user->id, _user->age, _user->name);
         }
       }
       _isSuccess = true;
     }
-    fclose(file);
+    fclose(_file);
   } else {
     (void)printf("Failed to open file for reading.\n");
+  }
+  return _isSuccess;
+}
+
+bool createFile(void) {
+  bool _isSuccess = false;
+  FILE *_file = fopen(FILENAME, "w");
+  if (_file != NULL) {
+    _isSuccess = true;
+    fclose(_file);
+  } else {
+    (void)printf("Failed to create file.\n");
   }
   return _isSuccess;
 }
