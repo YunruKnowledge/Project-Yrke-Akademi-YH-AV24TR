@@ -4,12 +4,15 @@
 
 void arrayPrint(int *_iptr, const size_t _size);
 void arrayFillRandom(int *_iptr, const size_t _size);
-void arrayFlip(int *_iptr, const size_t _a, const size_t _b);
+//Make a function to swap values of -two int variables(?).
+void arrayFlip(int *_iptr, const size_t _a, const size_t _b); 
 
 using compare_t = bool (*)(int, int);
 void sort_array(size_t length, int *arr, compare_t compare);
 bool compare_asc(int a, int b);
 bool compare_desc(int a, int b);
+
+void intSwap(int &_a, int &_b); // Make a function to swap values of two int -variables(?).
 
 int main(void) {
   int _array[NUM]{0};
@@ -28,6 +31,12 @@ int main(void) {
 
   sort_array(NUM, _iptr, compare_desc);
   arrayPrint(_iptr, NUM);
+
+  int a{1};
+  int b{24};
+  std::cout << "A&B->" << a << "/" << b << std::endl;
+  intSwap(a, b);
+  std::cout << "A&B->" << a << "/" << b << std::endl;
 
   return 0;
 }
@@ -78,3 +87,9 @@ void sort_array(size_t length, int *arr, compare_t compare) {
 bool compare_asc(int a, int b) { return (a > b); }
 
 bool compare_desc(int a, int b) { return (a < b); }
+
+void intSwap(int &_a, int &_b) {
+  int _temp{_a};
+  _a = _b;
+  _b = _temp;
+}
