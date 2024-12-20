@@ -7,52 +7,45 @@ using namespace std;
 #define ROW 2
 #define COLUMN 3
 
-void fillMatrixWithRandomNumbers(int **arr, int rows, int column);
-void printMatrix(int **arr, int rows, int column);
+#define MAX_RAND_VAL 99
+
+void fillMatrixWithRandomNumbers(int arr[ROW][COLUMN]);
+
+void printMatrix(int arr[ROW][COLUMN]);
 
 int main()
 {
-    int **arr = new int *[ROW];
-    for (int i = 0; i < ROW; ++i)
-    {
-        arr[i] = new int[COLUMN];
-    }
+    int arr[ROW][COLUMN];
 
-    fillMatrixWithRandomNumbers(arr, ROW, COLUMN);
+    srand(time(0));
+
+    fillMatrixWithRandomNumbers(arr);
 
     cout << "Filled Matrix: " << endl;
-    printMatrix(arr, ROW, COLUMN);
-
-    for (int i = 0; i < ROW; ++i)
-    {
-        delete[] arr[i];
-    }
-    delete[] arr;
+    printMatrix(arr);
 
     return 0;
 }
 
-void fillMatrixWithRandomNumbers(int **arr, int rows, int column)
+void printMatrix(int arr[ROW][COLUMN])
 {
-    srand(time(0));
-
-    for (int i = 0; i < rows; ++i)
+    for (int(*i)[COLUMN] = arr; (i - arr) < ROW; i++)
     {
-        for (int j = 0; j < column; ++j)
+        for (int *y = *i; (y - *i) < COLUMN; y++)
         {
-            *(*(arr + i) + j) = rand() % 100; 
+            std::cout << *y << "\t";
         }
+        std::cout << std::endl;
     }
 }
 
-void printMatrix(int **arr, int rows, int column)
+void fillMatrixWithRandomNumbers(int arr[ROW][COLUMN])
 {
-    for (int i = 0; i < rows; ++i)
+    for (int(*i)[COLUMN] = arr; (i - arr) < ROW; i++)
     {
-        for (int j = 0; j < column; ++j)
+        for (int *y = *i; (y - *i) < COLUMN; y++)
         {
-            cout << *(*(arr + i) + j) << "\t"; 
+            *y = std::rand() % (MAX_RAND_VAL + 1);
         }
-        cout << endl;
     }
 }
