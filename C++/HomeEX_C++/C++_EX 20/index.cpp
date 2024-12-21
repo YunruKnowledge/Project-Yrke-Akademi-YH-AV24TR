@@ -1,27 +1,28 @@
+#include <cassert>
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
 #include "bufferArray.h"
 
+// Example Numbers
+#define MSG 42
+#define MSG_LENGTH 7
+#define MSG_INDEX 4
 
 int main(void)
 {
     uint8_t *arr = Buffer::createArray(BUFFER);
 
-    uint8_t msg = 42;
-    uint8_t msgLength = 7;
-    uint8_t msgIndex = 0;
+    assert(Buffer::push(MSG_LENGTH, MSG_INDEX, Buffer::toBinary(MSG), arr));
+    std::cout << "Test Passed! Msg Successfully Pushed!" << std::endl;
 
-    Buffer::push(msgLength, msgIndex, Buffer::toBinary(msg), arr);
-    std::cout << (int)(Buffer::pull(msgLength, msgIndex, arr)) << std::endl;
+    assert(MSG == (int)(Buffer::pull(MSG_LENGTH, MSG_INDEX, arr)));
+    std::cout << "Test Passed! Msg Successfully Pulled!" << std::endl;
 
-    float msgFloat = 7.5f;
-    msgLength = 16;
-    msgIndex = 7;
+    std::cout << "Pulled Message is: " << (int)(Buffer::pull(MSG_LENGTH, MSG_INDEX, arr)) << std::endl;
 
-    Buffer::push(msgLength, msgIndex, Buffer::toBinary(0, msgFloat), arr);
-    std::cout << (float)(Buffer::pull(msgLength, msgIndex, arr, true)) << std::endl;
+    assert(Buffer::clearArr(arr));
+    std::cout << "Test Passed! Array Successfully Cleared!" << std::endl;
 
-    Buffer::clearArr(arr);
     return 0;
 }

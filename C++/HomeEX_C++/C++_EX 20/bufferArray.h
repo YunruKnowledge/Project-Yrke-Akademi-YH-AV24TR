@@ -37,8 +37,9 @@ namespace Buffer
      * @param index is a place where to put it in array
      * @param msg you want to push to array
      * @param arr you want to write the message in
+     * @return true if push is successfully done or false if arr is null or there is no place to put msg
      */
-    void push(int msgLength, int index, uint16_t msg, uint8_t *arr);
+    bool push(int msgLength, int index, uint16_t msg, uint8_t *arr);
 
     /**
      * @brief A function to get a message from a array
@@ -64,8 +65,9 @@ namespace Buffer
      * @brief Function to clear the memory of a array
      *
      * @param arr you want to clear
+     * @return true if cleared successfully or false if arr is null already
      */
-    void clearArr(uint8_t *arr);
+    bool clearArr(uint8_t *arr);
 }
 
 #endif // !BUFFER_ARRAY_H

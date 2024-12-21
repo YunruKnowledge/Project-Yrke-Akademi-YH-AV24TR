@@ -9,17 +9,39 @@ uint8_t *Buffer::createArray(int size)
     return arr;
 }
 
-void Buffer::clearArr(uint8_t *arr)
+bool Buffer::clearArr(uint8_t *arr)
 {
-    delete[] arr;
-    arr = nullptr;
+    bool status = false;
+
+    if (arr != nullptr)
+    {
+        delete[] arr;
+        arr = nullptr;
+        status = true;
+    }
+    else
+    {
+        std::cout << "Error! No array found!" << std::endl;
+        status = false;
+    }
+
+    return status;
 }
 
-void Buffer::push(int msgLength, int index, uint16_t msg, uint8_t *arr)
+bool Buffer::push(int msgLength, int index, uint16_t msg, uint8_t *arr)
 {
+    bool status = true;
+
+    if (arr == nullptr)
+    {
+        status = false;
+        exit(0);
+    }
+
     if (msgLength <= 0 || msgLength > BUFFER_IN_BITS)
     {
         std::cerr << "Invalid index or message length" << std::endl;
+        status = false;
         exit(0);
     }
 
@@ -27,6 +49,8 @@ void Buffer::push(int msgLength, int index, uint16_t msg, uint8_t *arr)
     {
         arr[index + i] = (msg >> MSG_SHIFT_FORMULA(msgLength, i)) & 1;
     }
+
+    return status;
 }
 
 uint16_t Buffer::toBinary(int msgInt, float msgFloat)
@@ -52,6 +76,12 @@ uint16_t Buffer::toBinary(int msgInt, float msgFloat)
 float Buffer::pull(int msgLength, int index, uint8_t *arr, bool isFloat)
 {
     uint16_t msg = 0;
+
+    if (arr == nullptr)
+    {
+        std::cout << "Error! No array found!" << std::endl;
+        exit(0);
+    }
 
     for (int i = 0; i < msgLength; i++)
     {
