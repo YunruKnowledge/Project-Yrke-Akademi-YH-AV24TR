@@ -50,7 +50,11 @@
         "iomanip": "cpp",
         "sstream": "cpp",
         "list": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "cstring": "cpp",
+        "buffer": "cpp",
+        "netfwd": "cpp",
+        "ratio": "cpp"
     },
     "cSpell.words": [
         "Roksandic"

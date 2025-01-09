@@ -1,4 +1,8 @@
-#include "stackClass.h"
+#include "singleton.h"
+
+
+int Stack::stackArr[];
+int Stack::currentSize{0};
 
 int main(void)
 {
