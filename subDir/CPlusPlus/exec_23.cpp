@@ -2,48 +2,38 @@
 #include <cassert>
 #include <iostream>
 
-static constexpr double PI{3.1415};
-
 class Shape {
 private:
-  std::string name;
   double area;
-
-protected:
-  void setName(std::string _string) { name = _string; }
-  void setArea(const double _value) { area = _value; }
+  std::string name;
 
 public:
+  Shape(std::string _name = "") : name{_name} {};
   void printArea(void) const {
-    std::cout << "Ze area of " << name << "is: " << area << std::endl;
+    std::cout << "Ze area of " << name << " is: " << this->getArea() << std::endl;
   }
+  std::string getName(void) const { return name; }
+  virtual double getArea(void) const = 0;
 };
 
 class Point {
-  double x, y;
+  int x, y;
 
 public:
-  Point(double _x, double _y) : x{_x}, y{_y} {};
+  Point(int _x, int _y) : x{_x}, y{_y} {};
 };
 
 class Circle : public Shape {
   double radius;
   Point origin;
-
-  void setShape(void) {
-    double area{radius * radius * PI};
-    std::string name{"Circle Shape"};
-
-    Shape::setArea(area);
-    Shape::setName(name);
-  }
+  static constexpr double PI{3.1415};
 
 public:
-  Circle(const double _radius) : radius{_radius}, origin{radius, radius} {
-    setShape();
-  };
+  Circle(int _x, int _y, const double _radius, std::string _name = "")
+      : radius{_radius}, origin{_x, _y},
+        Shape{("Circle " + _name)} {};
 
-  double getArea(void) const { return (radius * radius * PI); }
+  double getArea(void) const override { return (radius * radius * PI); }
 
   friend bool operator==(const Circle &_a, const Circle &_b) {
     return (_a.radius == _b.radius);
@@ -52,33 +42,31 @@ public:
 
 class Square : public Shape {
   double length;
-  Point origin;
 
 public:
-  Square(const double _side_length)
-      : length{_side_length}, origin{length / 2, length / 2} {
-    std::string name{"Square Shape"};
-    Shape::setArea(length * 2);
-    Shape::setName(name);
-  };
+  Square(const double _side_length, std::string _name = "")
+      : length{_side_length}, Shape{("Square " + _name)} {};
 
-  double getArea(void) { return length * 2; }
+  double getArea(void) const override { return length * length; }
 };
 
 int main(void) {
   std::cout << "Assert Test Starting..." << std::endl;
 
-  Circle circle1{2};
+  Circle circle1{0, 0, 2, "A"};
   circle1.printArea();
-  Circle circle2{4};
+  Circle circle2{0, 0, 4, "B"};
   circle2.printArea();
-  Circle circle3{2};
+  Circle circle3{0, 0, 2, "C"};
   circle3.printArea();
-  assert(circle3 == circle1);
 
-  Square Square{20};
+  assert(circle3 == circle1);
+  std::cout << circle1.getName() << ((circle3 == circle1) ? " is" : " is not")
+            << " the same." << std::endl;
+
+  Square Square{20, "D"};
   Square.printArea();
-  assert(40 == Square.getArea());
+  assert(400 == Square.getArea());
 
   std::cout << "Assert Test Finished" << std::endl;
 

@@ -19,11 +19,11 @@ class Queue {
   Node *tail{nullptr};
   size_t count{0};
 
-  Queue(const Queue &) = delete;
-  Queue &operator=(const Queue &) = delete;
 
 public:
   Queue() = default;
+  Queue(const Queue &) = delete;
+  Queue &operator=(const Queue &) = delete;
 
   bool enqueue(const Type &_value) {
     bool status{false};
