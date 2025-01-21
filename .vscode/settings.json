@@ -54,7 +54,8 @@
         "cstring": "cpp",
         "buffer": "cpp",
         "netfwd": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "map": "cpp"
     },
     "cSpell.words": [
         "Roksandic"

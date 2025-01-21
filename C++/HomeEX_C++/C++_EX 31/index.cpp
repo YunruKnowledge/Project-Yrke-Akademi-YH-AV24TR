@@ -1,44 +1,34 @@
 /**
- * @file queueListTemplate.h
+ * @file index.cpp
  * @author Lazar Roksandic (roksandiclazar@gmail.com)
- * @brief Library for Queue Linked List using Template
+ * @brief Program to create Uncopiable but movable Linked List Queue
  * @version 0.1
- * @date 2025-01-15
- *
+ * @date 2025-01-21
+ * 
  * @copyright Copyright (c) 2025
- *
+ * 
  */
-#ifndef QUEUE_LIST_TEMPLATE
-#define QUEUE_LIST_TEMPLATE
-
 #include <iostream>
-
-template <typename T>
-class Node
-{
-public:
-    Node *next;
-    T item;
-
-    /**
-     * @brief Construct a new Node object
-     *
-     * @param newItem you want to insert into a node
-     */
-    Node(T newItem)
-    {
-        this->item = newItem;
-        this->next = nullptr;
-    }
-
-    ~Node() = default;
-};
 
 template <typename T>
 class Queue
 {
-    Node<T> *top;
-    Node<T> *bottom;
+    struct Node
+    {
+        Node *next;
+        T item;
+
+        Node(T newItem)
+        {
+            this->item = 0;
+            this->next = nullptr;
+        }
+
+        ~Node() {};
+    };
+
+    Node *top;
+    Node *bottom;
 
     int currentAmount;
     int maxAmount;
@@ -47,11 +37,41 @@ public:
     Queue() = default;
 
     Queue(const Queue &queue) = delete;
-    Queue(Queue &&queue) = delete;
+    Queue(Queue &&queue) noexcept : top{queue.top}, bottom{queue.bottom}, currentAmount{queue.currentAmount}, maxAmount{queue.maxAmount}
+    {
+        delete queue.top;
+        delete queue.bottom;
+
+        queue.top = nullptr;
+        queue.bottom = nullptr;
+
+        queue.currentAmount = 0;
+        queue.maxAmount = 0;
+    };
 
     Queue &operator=(const Queue &queue) = delete;
-    Queue &operator=(Queue &&queue) = delete;
+    Queue &operator=(Queue &&queue) noexcept
+    {
+        if (this != &queue)
+        {
+            clear();    
 
+            top = queue.top;
+            bottom = queue.bottom;
+            currentAmount = queue.currentAmount;
+            maxAmount = queue.maxAmount;
+
+            delete queue.top;
+            delete queue.bottom;
+
+            queue.top = nullptr;
+            queue.bottom = nullptr;
+            queue.currentAmount = 0;
+            queue.maxAmount = 0;
+        }
+
+        return *this;
+    };
     /**
      * @brief Overload cin to print entire queue
      *
@@ -63,7 +83,7 @@ public:
     {
         if (!queue.isEmpty())
         {
-            Node<T> *current = queue.top;
+            Node *current = queue.top;
             int counter{1};
 
             while (current != nullptr)
@@ -115,7 +135,7 @@ public:
      */
     bool enqueue(T item)
     {
-        Node<T> *newNode = new Node{item};
+        Node *newNode = new (std::nothrow) Node{item};
         bool status{true};
 
         if (!this->isFull())
@@ -153,7 +173,7 @@ public:
 
         if (!this->isEmpty())
         {
-            Node<T> *temp = top;
+            Node *temp = top;
             top = top->next;
 
             if (top == nullptr)
@@ -219,4 +239,7 @@ public:
     ~Queue() { clear(); };
 };
 
-#endif // !QUEUE_LIST_TEMPLATE
+int main(void)
+{
+    return 0;
+}
