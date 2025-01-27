@@ -79,10 +79,6 @@ int main(void)
 
         buffer.clear();
     }
-    catch (const std::range_error &e) // Throw an error if buffer size is less than 4
-    {
-        std::cerr << e.what() << '\n';
-    }
     catch (const std::runtime_error &e) // Throw an error if array is a nullptr
     {
         std::cerr << e.what() << '\n';

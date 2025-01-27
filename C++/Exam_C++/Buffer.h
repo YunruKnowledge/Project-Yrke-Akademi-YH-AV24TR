@@ -27,7 +27,9 @@ class CircularBuffer
 {
     static constexpr size_t MIN_LENGTH = 4;
 
-    T *array;
+    static_assert(N > MIN_LENGTH, "Size is out of range!");
+
+    T array[N];
 
     int head;
     int tail;
@@ -83,18 +85,7 @@ public:
      * @brief Construct a new Circular Buffer object
      *
      */
-    CircularBuffer() : array{new T[N]{}}, head{-1}, tail{0}
-    {
-        if (N < MIN_LENGTH)
-        {
-            throw std::range_error("Size is out of range!");
-        }
-
-        if (array == nullptr)
-        {
-            throw std::runtime_error("Fail to allocate the memory");
-        }
-    };
+    CircularBuffer() : head{-1}, tail{0} {};
 
     /**
      * @brief Read the latest added value from the circular buffer
@@ -121,30 +112,15 @@ public:
      */
     bool write(T item)
     {
-        bool status{false};
-
-        if (array != nullptr)
-            status = true;
-
         if (isFull())
         {
-            head = tail;
-            head++;
+            head = (head + 1) % N;
         }
 
-        if (tail >= N)
-        {
-            tail = 0;
+        array[tail] = item;
+        tail = (tail + 1) % N;
 
-            if (head == -1)
-            {
-                head = tail;
-                head++;
-            }
-        }
-
-        array[tail++] = item;
-        return status;
+        return true;
     }
 
     /**
@@ -155,8 +131,8 @@ public:
     int getSize(void)
     {
         int _size{0};
-        int _head = head;
-        int _tail = tail;
+        int _head{head};
+        int _tail{tail};
 
         if (_head == -1)
             _head = 0;
@@ -197,26 +173,27 @@ public:
      */
     double getAverage(void)
     {
-        int _head = head;
-        int _tail = tail;
+        int _head{head};
+        int _tail{tail};
         double sum;
 
-        for (size_t i = _head; i != _tail; i++)
-        {
-            if (i >= N)
-                i = 0;
+        if (_head == -1)
+            _head = 0;
 
-            sum += array[i];
+        while (_head != _tail)
+        {
+            sum += array[_head];
+            _head = (_head + 1) % N;
         }
 
-        return (sum / getSize());
+        return (getSize() > 0) ? (sum / getSize()) : 0.0;
     }
 
     /**
      * @brief Destroy the Circular Buffer object
      *
      */
-    ~CircularBuffer() { delete[] array; };
+    ~CircularBuffer() = default;
 };
 
 #endif // !*
