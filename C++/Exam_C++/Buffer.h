@@ -2,7 +2,7 @@
  * @file Buffer.h
  * @author Lazar Roksandic (roksandiclazar@gmail.com)
  * @brief Library for Circular Buffer using arrays
- * @version 0.5
+ * @version 0.6
  * @date 2025-01-23
  *
  * @copyright Copyright (c) 2025
@@ -52,12 +52,12 @@ public:
      */
     friend std::ostream &operator<<(std::ostream &os, CircularBuffer &cb)
     {
-        int _tail{cb.tail};
+        int _head{cb.head};
 
         os << '[';
         for (size_t i = 0; i < cb.currentAmount; i++)
         {
-            int temp = _tail + i;
+            int temp = _head + i;
             if (temp >= N)
             {
                 temp -= N;
@@ -80,7 +80,7 @@ public:
      * @brief Construct a new Circular Buffer object
      *
      */
-    CircularBuffer() : head{-1}, tail{0}, currentAmount{0} {};
+    CircularBuffer() : head{0}, tail{0}, currentAmount{0} {};
 
     /**
      * @brief Read the latest added value from the circular buffer
@@ -89,16 +89,10 @@ public:
      */
     T read(void)
     {
-        T item;
+        T item{0};
 
         if (currentAmount != 0)
         {
-            if (head == -1)
-                head = 0;
-
-            if ((head + 1 > N))
-                head = 0;
-
             item = array[head];
             head = (head + 1) % N;
 
@@ -156,7 +150,7 @@ public:
      */
     void clear(void)
     {
-        head = -1;
+        head = 0;
         tail = 0;
         currentAmount = 0;
     };
@@ -171,9 +165,6 @@ public:
         int _head{head};
         int _tail{tail};
         double sum{0};
-
-        if (_head == -1)
-            _head = 0;
 
         while (_head != _tail)
         {
@@ -191,4 +182,4 @@ public:
     ~CircularBuffer() = default;
 };
 
-#endif // !*
+#endif
