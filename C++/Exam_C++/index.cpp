@@ -65,6 +65,7 @@ int main(void)
         assert(buffer.write(15));
         assert(buffer.write(20));
         assert(buffer.write(25));
+
         std::cout << "Testing writing new items into a clear buffer... " << std::endl;
 
         std::cout << "Buffer after adding new items: " << buffer << std::endl;
@@ -78,6 +79,8 @@ int main(void)
         std::cout << "All Test Passed!" << std::endl;
 
         buffer.clear();
+
+        std::cout << buffer << std::endl;
     }
     catch (const std::runtime_error &e) // Throw an error if array is a nullptr
     {

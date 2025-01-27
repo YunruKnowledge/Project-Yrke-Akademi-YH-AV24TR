@@ -51,31 +51,27 @@ public:
      */
     friend std::ostream &operator<<(std::ostream &os, CircularBuffer &cb)
     {
-        int _head = cb.head;
-        int _tail = cb.tail;
+        int _head{cb.head};
+        int _tail{cb.tail};
 
-        if (_head == -1)
-            _head = 0;
-
-        if ((_head + 1 > N))
-            _head = 0;
-
-        os << '[';
-        for (size_t i = _head; i != _tail; i++)
+        if (_head != _tail)
         {
-            if (i > N)
-                i = 0;
+            os << '[';
 
-            if (i == _tail - 1)
+            for (size_t i = _head; i != _tail; i = (i + 1) % N)
             {
+                if (i != _head)
+                    os << ", ";
+
                 os << cb.array[i];
             }
-            else
-            {
-                os << cb.array[i] << ", ";
-            }
+
+            os << ']';
         }
-        os << ']';
+        else
+        {
+            os << "[]";
+        }
 
         return os;
     }
@@ -100,7 +96,10 @@ public:
         if ((head + 1 > N))
             head = 0;
 
-        return array[head++];
+        T item = array[head];
+        head = (head + 1) % N;
+
+        return item;
     }
 
     /**
@@ -175,7 +174,7 @@ public:
     {
         int _head{head};
         int _tail{tail};
-        double sum;
+        double sum{0};
 
         if (_head == -1)
             _head = 0;
