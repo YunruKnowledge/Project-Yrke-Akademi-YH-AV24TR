@@ -2,7 +2,7 @@
  * @file Buffer.h
  * @author Lazar Roksandic (roksandiclazar@gmail.com)
  * @brief Library for Circular Buffer using arrays
- * @version 0.1
+ * @version 0.3
  * @date 2025-01-23
  *
  * @copyright Copyright (c) 2025
@@ -53,6 +53,9 @@ public:
     {
         int _head{cb.head};
         int _tail{cb.tail};
+
+        if (_head == -1)
+            _head = 0;
 
         if (_head != _tail)
         {
@@ -163,6 +166,11 @@ public:
     {
         head = -1;
         tail = 0;
+
+        for (size_t i = 0; i < N; ++i)
+        {
+            array[i] = T();
+        }
     };
 
     /**
