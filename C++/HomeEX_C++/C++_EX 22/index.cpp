@@ -1,6 +1,5 @@
 #include "singleton.h"
 
-
 int Stack::stackArr[];
 int Stack::currentSize{0};
 

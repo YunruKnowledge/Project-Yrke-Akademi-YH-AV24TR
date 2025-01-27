@@ -109,7 +109,8 @@
         "dynamic_bitset": "cpp",
         "typeindex": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "*.td": "cpp"
     },
     "cSpell.words": [
         "Roksandic"
