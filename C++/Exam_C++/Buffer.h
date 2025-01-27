@@ -2,7 +2,7 @@
  * @file Buffer.h
  * @author Lazar Roksandic (roksandiclazar@gmail.com)
  * @brief Library for Circular Buffer using arrays
- * @version 0.3
+ * @version 0.4
  * @date 2025-01-23
  *
  * @copyright Copyright (c) 2025
@@ -27,12 +27,13 @@ class CircularBuffer
 {
     static constexpr size_t MIN_LENGTH = 4;
 
-    static_assert(N > MIN_LENGTH, "Size is out of range!");
+    static_assert(N >= MIN_LENGTH, "Size is out of range!");
 
     T array[N];
 
     int head;
     int tail;
+    int currentAmount;
 
 public:
     /**
@@ -84,7 +85,7 @@ public:
      * @brief Construct a new Circular Buffer object
      *
      */
-    CircularBuffer() : head{-1}, tail{0} {};
+    CircularBuffer() : head{-1}, tail{0}, currentAmount{0} {};
 
     /**
      * @brief Read the latest added value from the circular buffer
@@ -93,14 +94,21 @@ public:
      */
     T read(void)
     {
-        if (head == -1)
-            head = 0;
+        T item;
 
-        if ((head + 1 > N))
-            head = 0;
+        if (currentAmount != 0)
+        {
+            if (head == -1)
+                head = 0;
 
-        T item = array[head];
-        head = (head + 1) % N;
+            if ((head + 1 > N))
+                head = 0;
+
+            item = array[head];
+            head = (head + 1) % N;
+
+            currentAmount--;
+        }
 
         return item;
     }
@@ -118,6 +126,10 @@ public:
         {
             head = (head + 1) % N;
         }
+        else
+        {
+            currentAmount++;
+        }
 
         array[tail] = item;
         tail = (tail + 1) % N;
@@ -132,22 +144,7 @@ public:
      */
     int getSize(void)
     {
-        int _size{0};
-        int _head{head};
-        int _tail{tail};
-
-        if (_head == -1)
-            _head = 0;
-
-        for (size_t i = _head; i != _tail; i++)
-        {
-            if (i >= N)
-                i = 0;
-
-            _size++;
-        }
-
-        return (isFull()) ? N : _size;
+        return currentAmount;
     }
 
     /**
@@ -156,7 +153,7 @@ public:
      * @return true if its full
      * @return false if its not full
      */
-    bool isFull(void) { return tail == head; }
+    bool isFull(void) { return currentAmount == N; }
 
     /**
      * @brief Function to clear the buffer
@@ -166,11 +163,7 @@ public:
     {
         head = -1;
         tail = 0;
-
-        for (size_t i = 0; i < N; ++i)
-        {
-            array[i] = T();
-        }
+        currentAmount = 0;
     };
 
     /**
