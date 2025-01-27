@@ -1,0 +1,222 @@
+/**
+ * @file Buffer.h
+ * @author Lazar Roksandic (roksandiclazar@gmail.com)
+ * @brief Library for Circular Buffer using arrays
+ * @version 0.1
+ * @date 2025-01-23
+ *
+ * @copyright Copyright (c) 2025
+ *
+ */
+#ifndef Buffer_H
+#define Buffer_H
+
+#include <iostream>
+#include <type_traits>
+#include <stdexcept>
+
+/**
+ * @brief A class for  creating circlear buffer array using template
+ *
+ * @tparam T type of array
+ * @tparam N max size for the array
+ * @tparam std::enable_if_t<std::is_arithmetic_v<T>> allow only numbers
+ */
+template <typename T, size_t N, typename = std::enable_if_t<std::is_arithmetic_v<T> > >
+class CircularBuffer
+{
+    static constexpr size_t MIN_LENGTH = 4;
+
+    T *array;
+
+    int head;
+    int tail;
+
+public:
+    /**
+     * @brief Delete Copy Contractor
+     *
+     */
+    CircularBuffer(const CircularBuffer &) = delete;
+    CircularBuffer &operator=(const CircularBuffer &) = delete;
+
+    /**
+     * @brief Overload the << to print all unread items form the buffer
+     *
+     * @param os you print
+     * @param cb circular buffer your reading
+     * @return std::ostream& all the unread items from the given buffer
+     */
+    friend std::ostream &operator<<(std::ostream &os, CircularBuffer &cb)
+    {
+        int _head = cb.head;
+        int _tail = cb.tail;
+
+        if (_head == -1)
+            _head = 0;
+
+        if ((_head + 1 > N))
+            _head = 0;
+
+        os << '[';
+        for (size_t i = _head; i != _tail; i++)
+        {
+            if (i > N)
+                i = 0;
+
+            if (i == _tail - 1)
+            {
+                os << cb.array[i];
+            }
+            else
+            {
+                os << cb.array[i] << ", ";
+            }
+        }
+        os << ']';
+
+        return os;
+    }
+
+public:
+    /**
+     * @brief Construct a new Circular Buffer object
+     *
+     */
+    CircularBuffer() : array{new T[N]{}}, head{-1}, tail{0}
+    {
+        if (N < MIN_LENGTH)
+        {
+            throw std::range_error("Size is out of range!");
+        }
+
+        if (array == nullptr)
+        {
+            throw std::runtime_error("Fail to allocate the memory");
+        }
+    };
+
+    /**
+     * @brief Read the latest added value from the circular buffer
+     *
+     * @return T item that you read
+     */
+    T read(void)
+    {
+        if (head == -1)
+            head = 0;
+
+        if ((head + 1 > N))
+            head = 0;
+
+        return array[head++];
+    }
+
+    /**
+     * @brief Function to write items to the circular buffer
+     *
+     * @param item you want to write into the buffer
+     * @return true if you write it successfully
+     * @return false if you couldn't write it successfully
+     */
+    bool write(T item)
+    {
+        bool status{false};
+
+        if (array != nullptr)
+            status = true;
+
+        if (isFull())
+        {
+            head = tail;
+            head++;
+        }
+
+        if (tail >= N)
+        {
+            tail = 0;
+
+            if (head == -1)
+            {
+                head = tail;
+                head++;
+            }
+        }
+
+        array[tail++] = item;
+        return status;
+    }
+
+    /**
+     * @brief Get the Size of Circular Buffer
+     *
+     * @return int amount of unread items in a buffer
+     */
+    int getSize(void)
+    {
+        int _size{0};
+        int _head = head;
+        int _tail = tail;
+
+        if (_head == -1)
+            _head = 0;
+
+        for (size_t i = _head; i != _tail; i++)
+        {
+            if (i >= N)
+                i = 0;
+
+            _size++;
+        }
+
+        return (isFull()) ? N : _size;
+    }
+
+    /**
+     * @brief Function to check if Circular Buffer is full
+     *
+     * @return true if its full
+     * @return false if its not full
+     */
+    bool isFull(void) { return tail == head; }
+
+    /**
+     * @brief Function to clear the buffer
+     *
+     */
+    void clear(void)
+    {
+        head = -1;
+        tail = 0;
+    };
+
+    /**
+     * @brief Get the Average value from the circular buffer
+     *
+     * @return double average from all unread valuse from the buffer
+     */
+    double getAverage(void)
+    {
+        int _head = head;
+        int _tail = tail;
+        double sum;
+
+        for (size_t i = _head; i != _tail; i++)
+        {
+            if (i >= N)
+                i = 0;
+
+            sum += array[i];
+        }
+
+        return (sum / getSize());
+    }
+
+    /**
+     * @brief Destroy the Circular Buffer object
+     *
+     */
+    ~CircularBuffer() { delete[] array; };
+};
+
+#endif // !*
