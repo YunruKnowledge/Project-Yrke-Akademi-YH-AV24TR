@@ -2,7 +2,7 @@
  * @file Buffer.h
  * @author Lazar Roksandic (roksandiclazar@gmail.com)
  * @brief Library for Circular Buffer using arrays
- * @version 0.4
+ * @version 0.5
  * @date 2025-01-23
  *
  * @copyright Copyright (c) 2025
@@ -52,30 +52,25 @@ public:
      */
     friend std::ostream &operator<<(std::ostream &os, CircularBuffer &cb)
     {
-        int _head{cb.head};
         int _tail{cb.tail};
 
-        if (_head == -1)
-            _head = 0;
-
-        if (_head != _tail)
+        os << '[';
+        for (size_t i = 0; i < cb.currentAmount; i++)
         {
-            os << '[';
-
-            for (size_t i = _head; i != _tail; i = (i + 1) % N)
+            int temp = _tail + i;
+            if (temp >= N)
             {
-                if (i != _head)
-                    os << ", ";
-
-                os << cb.array[i];
+                temp -= N;
             }
 
-            os << ']';
+            os << cb.array[temp];
+
+            if (i != cb.currentAmount - 1)
+            {
+                os << ", ";
+            }
         }
-        else
-        {
-            os << "[]";
-        }
+        os << ']';
 
         return os;
     }
