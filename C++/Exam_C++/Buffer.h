@@ -27,8 +27,6 @@ class CircularBuffer
 {
     static constexpr size_t MIN_LENGTH = 4;
 
-    static_assert(N >= MIN_LENGTH, "Size is out of range!");
-
     T array[N];
 
     int head;
@@ -80,7 +78,10 @@ public:
      * @brief Construct a new Circular Buffer object
      *
      */
-    CircularBuffer() : head{0}, tail{0}, currentAmount{0} {};
+    CircularBuffer() : head{0}, tail{0}, currentAmount{0}
+    {
+        static_assert(N >= MIN_LENGTH, "Size is out of range!");
+    };
 
     /**
      * @brief Read the latest added value from the circular buffer
@@ -131,10 +132,7 @@ public:
      *
      * @return int amount of unread items in a buffer
      */
-    int getSize(void)
-    {
-        return currentAmount;
-    }
+    int getSize(void) { return currentAmount; }
 
     /**
      * @brief Function to check if Circular Buffer is full
