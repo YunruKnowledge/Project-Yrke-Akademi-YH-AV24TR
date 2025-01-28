@@ -1,44 +1,47 @@
 #include <cassert>
 #include <iostream>
+#include <unity.h>
+#include <unity_internals.h>
 #include "fizzbuzz.h"
 
-void test_fizz_buzz_null(void)
+void setUp(void) {}
+
+void tearDown(void) {}
+
+void test_fizzbuzz_null(void)
 {
-    assert(fizzBuzz(0) == "");
-    std::cout << "[Passed] test_fizz_buzz_null" << std::endl;
+    TEST_ASSERT_EQUAL_STRING("", fizzBuzz(0));
 }
 
-void test_fizz_buzz_digits(void)
+void test_fizzbuzz_digits(void)
 {
-    assert(fizzBuzz(2) == "2");
-    std::cout << "[Passed] test_fizz_buzz_digits" << std::endl;
+    TEST_ASSERT_EQUAL_STRING("2", fizzBuzz(2));
 }
 
-void test_fizz_buzz_fizz(void)
+void test_fizzbuzz_fizz(void)
 {
-    assert(fizzBuzz(3) == "Fizz");
-    std::cout << "[Passed] test_fizz_buzz_fizz" << std::endl;
+    TEST_ASSERT_EQUAL_STRING("Fizz", fizzBuzz(3));
 }
 
-void test_fizz_buzz_buzz(void)
+void test_fizzbuzz_buzz(void)
 {
-    assert(fizzBuzz(5) == "Buzz");
-    std::cout << "[Passed] test_fizz_buzz_buzz" << std::endl;
+    TEST_ASSERT_EQUAL_STRING("Buzz", fizzBuzz(5));
 }
 
-void test_fizz_buzz_fizzbuzz(void)
+void test_fizzbuzz_fizzbuzz(void)
 {
-    assert(fizzBuzz(15) == "FizzBuzz");
-    std::cout << "[Passed] test_fizz_buzz_fizzbuzz" << std::endl;
+    TEST_ASSERT_EQUAL_STRING("FizzBuzz", fizzBuzz(15));
 }
 
 int main(void)
 {
-    test_fizz_buzz_null();
-    test_fizz_buzz_digits();
-    test_fizz_buzz_fizz();
-    test_fizz_buzz_buzz();
-    test_fizz_buzz_fizzbuzz();
+    UNITY_BEGIN();
 
-    return 0;
+    RUN_TEST(test_fizzbuzz_null);
+    RUN_TEST(test_fizzbuzz_digits);
+    RUN_TEST(test_fizzbuzz_fizz);
+    RUN_TEST(test_fizzbuzz_buzz);
+    RUN_TEST(test_fizzbuzz_fizzbuzz);
+
+    return UNITY_END();
 }

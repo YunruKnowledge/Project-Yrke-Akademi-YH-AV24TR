@@ -1,5 +1,6 @@
 #include "fizzbuzz.h"
-#include <string>
+#include <cstdio>
+#include <cstring>
 
 constexpr int FIZZ_DIVISOR{3};
 #define FIZZ "Fizz"
@@ -10,29 +11,29 @@ constexpr int BUZZ_DIVISOR{5};
 constexpr int FIZZBUZZ_DIVISOR{FIZZ_DIVISOR * BUZZ_DIVISOR};
 #define FIZZBUZZ "FizzBuzz"
 
-static std::string output;
+static char output[sizeof(FIZZBUZZ)];
 
-const std::string fizzBuzz(int num)
+const char *fizzBuzz(int num)
 {
     if (num < 1)
     {
-        output = "";
+        std::strcpy(output, "");
     }
     else if (num % FIZZBUZZ_DIVISOR == 0)
     {
-        output = FIZZBUZZ;
+        std::strcpy(output, FIZZBUZZ);
     }
     else if (num % FIZZ_DIVISOR == 0)
     {
-        output = FIZZ;
+        std::strcpy(output, FIZZ);
     }
     else if (num % BUZZ_DIVISOR == 0)
     {
-        output = BUZZ;
+        std::strcpy(output, BUZZ);
     }
     else
     {
-        output = std::to_string(num);
+        std::sprintf(output, "%d", num);
     }
 
     return output;

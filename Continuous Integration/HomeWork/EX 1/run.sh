@@ -5,10 +5,14 @@ if [ -d "Build" ]; then
   rm -rf Build
 fi
 
-mkdir Build && cd Build
+mkdir -p Build && cd Build
 
-c++ -c ../Lib/fizzbuzz.cpp -o lib.o
+c++ -c ../Lib/fizzbuzz.cpp -I./fizzbuzz -o lib.o
 c++ -c ../Test/test.cpp -o test.o -I../Lib
-c++ -o index ../Src/index.cpp lib.o
+c++ -o index ../Src/index.cpp lib.o 
+
+c++ lib.o test.o -lunity -o test
+
+./test
 
 ./index
