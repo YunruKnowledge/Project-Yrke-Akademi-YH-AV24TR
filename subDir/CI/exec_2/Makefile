@@ -1,0 +1,40 @@
+
+COMPILER = g++
+BUILD_DIR = build/
+LIB_UNITY_DIR = lib/unity/
+LIB_UNITY_FILENAME = unity
+LIB_FIZZBUZZ_DIR = lib/fizzbuzz/
+LIB_FIZZBUZZ_FILENAME = fizzbuzz
+
+${BUILD_DIR}app: build ${BUILD_DIR}main.o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o
+	${COMPILER} ${BUILD_DIR}main.o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o -o ${BUILD_DIR}app
+
+${BUILD_DIR}main.o: src/main.cpp ${LIB_FIZZBUZZ_DIR}${LIB_FIZZBUZZ_FILENAME}.h
+	${COMPILER} -c src/main.cpp -I./${LIB_FIZZBUZZ_DIR} -o ${BUILD_DIR}main.o
+
+${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o: ${LIB_FIZZBUZZ_DIR}${LIB_FIZZBUZZ_FILENAME}.cpp ${LIB_FIZZBUZZ_DIR}${LIB_FIZZBUZZ_FILENAME}.h
+	${COMPILER} -c $< -I./${LIB_FIZZBUZZ_DIR} -o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o
+
+${BUILD_DIR}${LIB_UNITY_FILENAME}.o: ${LIB_UNITY_DIR}${LIB_UNITY_FILENAME}.cpp ${LIB_UNITY_DIR}${LIB_UNITY_FILENAME}.h
+	${COMPILER} -c $< -I./${LIB_UNITY_DIR} -o ${BUILD_DIR}${LIB_UNITY_FILENAME}.o
+
+${BUILD_DIR}test.o: test/test.cpp ${BUILD_DIR}${LIB_UNITY_FILENAME}.o
+	${COMPILER} -c $< -I./${LIB_UNITY_DIR} -I./${LIB_FIZZBUZZ_DIR} -o ${BUILD_DIR}test.o
+
+check: ${BUILD_DIR}test.o ${BUILD_DIR}${LIB_UNITY_FILENAME}.o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o
+	g++ $^ -o ${BUILD_DIR}test
+	./${BUILD_DIR}test
+
+run:
+	./${BUILD_DIR}app ${NUM}
+
+build:
+	mkdir -p build
+
+clean: 
+	rm -f ${BUILD_DIR}*.o
+	rm -f ${BUILD_DIR}app
+	rm -f ${BUILD_DIR}test
+	rm -d ${BUILD_DIR}
+
+.PHONY: build clean run
