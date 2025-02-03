@@ -1,40 +1,58 @@
 
-COMPILER = g++
-BUILD_DIR = build/
-LIB_UNITY_DIR = lib/unity/
-LIB_UNITY_FILENAME = unity
-LIB_FIZZBUZZ_DIR = lib/fizzbuzz/
-LIB_FIZZBUZZ_FILENAME = fizzbuzz
 
-${BUILD_DIR}app: build ${BUILD_DIR}main.o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o
-	${COMPILER} ${BUILD_DIR}main.o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o -o ${BUILD_DIR}app
 
-${BUILD_DIR}main.o: src/main.cpp ${LIB_FIZZBUZZ_DIR}${LIB_FIZZBUZZ_FILENAME}.h
-	${COMPILER} -c src/main.cpp -I./${LIB_FIZZBUZZ_DIR} -o ${BUILD_DIR}main.o
+CC = g++
+CFLAGS = -Wall
 
-${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o: ${LIB_FIZZBUZZ_DIR}${LIB_FIZZBUZZ_FILENAME}.cpp ${LIB_FIZZBUZZ_DIR}${LIB_FIZZBUZZ_FILENAME}.h
-	${COMPILER} -c $< -I./${LIB_FIZZBUZZ_DIR} -o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o
+LIB_DIR = lib
+UNITY_DIR = unity
+BUILD_DIR = build
 
-${BUILD_DIR}${LIB_UNITY_FILENAME}.o: ${LIB_UNITY_DIR}${LIB_UNITY_FILENAME}.cpp ${LIB_UNITY_DIR}${LIB_UNITY_FILENAME}.h
-	${COMPILER} -c $< -I./${LIB_UNITY_DIR} -o ${BUILD_DIR}${LIB_UNITY_FILENAME}.o
+TEST_FILENAME = test
+MAIN_FILENAME = main
 
-${BUILD_DIR}test.o: test/test.cpp ${BUILD_DIR}${LIB_UNITY_FILENAME}.o
-	${COMPILER} -c $< -I./${LIB_UNITY_DIR} -I./${LIB_FIZZBUZZ_DIR} -o ${BUILD_DIR}test.o
+INCLUDES = ${wildcard ${LIB_DIR}/*/*.h}
+INCLUDES := ${sort ${dir ${INCLUDES}}}
+INCLUDES := ${addprefix -I./, ${INCLUDES:%/=%}}
 
-check: ${BUILD_DIR}test.o ${BUILD_DIR}${LIB_UNITY_FILENAME}.o ${BUILD_DIR}${LIB_FIZZBUZZ_FILENAME}.o
-	g++ $^ -o ${BUILD_DIR}test
-	./${BUILD_DIR}test
+OBJECTS := ${notdir ${shell find . -name *.cpp}}
+OBJECTS := ${addprefix ${BUILD_DIR}/, ${OBJECTS:%.cpp=%.o}}
 
-run:
-	./${BUILD_DIR}app ${NUM}
+TEST_OBJS := ${filter-out ${BUILD_DIR}/${MAIN_FILENAME}.o, ${OBJECTS}}
+MAIN_OBJS := ${filter-out ${BUILD_DIR}/${TEST_FILENAME}.o ${BUILD_DIR}/${UNITY_DIR}.o, ${OBJECTS}}
 
-build:
-	mkdir -p build
+all: .mkbuild
+	@echo ">> Targets:"
+	@echo "> clean"
+	@echo "> check"
+	@echo "> run NUM=XX"
 
-clean: 
-	rm -f ${BUILD_DIR}*.o
-	rm -f ${BUILD_DIR}app
-	rm -f ${BUILD_DIR}test
-	rm -d ${BUILD_DIR}
+${BUILD_DIR}/${MAIN_FILENAME}: ${MAIN_OBJS}
+	@g++ $^ -o $@
 
-.PHONY: build clean run
+${BUILD_DIR}/${TEST_FILENAME}: ${TEST_OBJS}
+	@g++ $^ -o $@
+
+${BUILD_DIR}/%.o: */%.cpp
+	g++ -MMD -c $< ${INCLUDES} -o $@
+
+${BUILD_DIR}/%.o: ${LIB_DIR}/*/%.cpp
+	g++ -MMD -c $< ${INCLUDES} -o $@
+
+-include ${OBJECTS:.o=.d}
+
+run: .mkbuild ${BUILD_DIR}/${MAIN_FILENAME}
+	@echo ">> Running main program."
+	@./${BUILD_DIR}/${MAIN_FILENAME} ${NUM}
+
+check: .mkbuild ${BUILD_DIR}/${TEST_FILENAME}
+	@echo ">> Running test program."
+	@./${BUILD_DIR}/${TEST_FILENAME}
+
+.mkbuild:
+	@mkdir -p ${BUILD_DIR}
+
+clean:
+	@rm -rf ${BUILD_DIR}
+
+.PHONY: all .mkbuild clean run check
