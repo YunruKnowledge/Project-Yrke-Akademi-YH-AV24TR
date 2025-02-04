@@ -1,5 +1,2 @@
-*/*/*/build
-*/*/*/Build
-
-./run
-run
+build/
+Build/

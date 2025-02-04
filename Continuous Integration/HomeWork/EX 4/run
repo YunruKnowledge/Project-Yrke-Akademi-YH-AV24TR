@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+clear
+if [ -d "Build" ]; then
+  rm -rf Build
+fi
+
+mkdir -p Build && cd Build
+
+c++ -c ../Lib/list.cpp  -o list.o
+c++ -c ../Test/test.cpp -I../Lib -o test.o
+
+c++ list.o test.o -lunity -o test
+
+./test
