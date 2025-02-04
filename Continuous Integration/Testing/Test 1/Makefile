@@ -1,4 +1,5 @@
 CC = c++
+CFLAGS = -MMD -c
 
 LIB_DIR = lib
 BUILD_DIR = build
@@ -24,36 +25,36 @@ all: .mkbuild
 	@echo "        A number shall be passed to the program"
 	@echo "================================================="
 
-$(BUILD_DIR)/$(MAIN_EXE) : $(MAIN_OBJ)
+$(BUILD_DIR)/$(MAIN_EXE) : $(MAIN_OBJ) #build main files
 	@$(CC) $^ -o $@
 
-$(BUILD_DIR)/$(TEST_EXE) : $(TEST_OBJ)
+$(BUILD_DIR)/$(TEST_EXE) : $(TEST_OBJ) #build test files
 	@$(CC) $^ -lunity -o $@
 
-$(BUILD_DIR)/%.o : */%.cpp
-	@$(CC) -MMD -c $< $(INCLUDES) -Wall -o $@
+$(BUILD_DIR)/%.o : */%.cpp 			  #compile all the cpp files
+	@$(CC) $(CFLAGS) $< $(INCLUDES) -Wall -o $@
 
-$(BUILD_DIR)/%.o : $(LIB_DIR)/*/%.cpp
-	@$(CC) -MMD -c $< $(INCLUDES) -Wall -o $@
+$(BUILD_DIR)/%.o : $(LIB_DIR)/*/%.cpp #compile all lib cpp files
+	@$(CC) $(CFLAGS) $< $(INCLUDES) -Wall -o $@
 
 -include $(OBJECTS:.o=.d)
 
-run: .mkbuild $(BUILD_DIR)/$(MAIN_EXE)
+run: .mkbuild $(BUILD_DIR)/$(MAIN_EXE) #run build for main files
 	@echo "=================================="
 	@echo "====== Run The Main Program ======"
 	@echo "=================================="
 	@./$(BUILD_DIR)/$(MAIN_EXE) $(NUM)
 
-check: .mkbuild $(BUILD_DIR)/$(TEST_EXE)
+check: .mkbuild $(BUILD_DIR)/$(TEST_EXE) #run build for test files
 	@echo "=================================="
 	@echo "====== Run The Test Program ======"
 	@echo "=================================="
 	@./$(BUILD_DIR)/$(TEST_EXE)
 
-.mkbuild: 
+.mkbuild: 								 # Build the file if it doesn't exist
 	@mkdir -p $(BUILD_DIR)
 
-clean:
-	@rm -rf $(BUILD_DIR)
+clean:									 # Delete build file
+	@rm -rf $(BUILD_DIR) 				
 
 .PHONY: all .mkbuild clean run check
