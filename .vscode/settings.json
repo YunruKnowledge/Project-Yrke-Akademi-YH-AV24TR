@@ -113,6 +113,7 @@
         "*.td": "cpp"
     },
     "cSpell.words": [
+        "NUMGEN",
         "Roksandic"
     ],
     "C_Cpp.errorSquiggles": "disabled"
