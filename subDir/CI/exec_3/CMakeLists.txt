@@ -11,8 +11,8 @@ add_library(greet lib/greet/greet.cpp)
 target_include_directories(greet PUBLIC lib/greet/)
 
 add_executable(run_test test/test.cpp)
-target_link_libraries(run_test PRIVATE greet gtest gtest_main)
+target_link_libraries(run_test PRIVATE greet gtest)
 target_include_directories(run_test PRIVATE lib/greet test)
 
 enable_testing()
-add_test(NAME run_test COMMAND run_test)
+add_test(NAME Names COMMAND run_test)
