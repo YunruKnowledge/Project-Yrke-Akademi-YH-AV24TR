@@ -10,13 +10,13 @@ project("test_app")
 
 add_executable("test_app" "test/test.cpp")
 
-add_library("greetings" "lib/greetings.cpp")
+add_library("list" "lib/list.cpp")
 
-target_link_libraries("test_app" PRIVATE greetings)
+target_link_libraries("test_app" PRIVATE list)
 
 target_include_directories("test_app" PRIVATE "lib/" "test/")
 
-target_link_libraries("test_app" PRIVATE gtest)
+target_link_libraries("test_app" PRIVATE gtest gtest_main)
 
 enable_testing()
 add_test(NAME "test" COMMAND test_app)
