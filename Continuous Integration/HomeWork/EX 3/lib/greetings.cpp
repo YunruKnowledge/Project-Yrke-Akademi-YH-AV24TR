@@ -56,7 +56,7 @@ std::string greet(const std::string &name)
                 respond += " AND " + names[count - 1] + "!";
             }
         }
-        else // Need fixing
+        else
         {
             std::string cNames[count];
             int cCount{0};
