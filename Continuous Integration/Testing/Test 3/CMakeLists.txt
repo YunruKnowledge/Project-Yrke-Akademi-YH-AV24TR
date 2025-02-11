@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 project(DateTemplate)
 
 include_directories(includes)
-include_directories(lib/date)
+#include_directories(lib/date)
 include_directories(lib/today)
 
 add_executable(test test/test.cpp)
