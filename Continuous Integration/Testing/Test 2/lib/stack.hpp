@@ -57,6 +57,8 @@ public:
             {
                 status = false;
             }
+            
+            delete newNode;
         }
         else
         {
@@ -72,9 +74,12 @@ public:
 
         if (!isEmpty())
         {
+            node_t *temp = top;
             val = top->item;
             top = top->next;
             amount--;
+
+            delete top;
         }
         else
         {
