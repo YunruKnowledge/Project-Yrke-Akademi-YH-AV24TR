@@ -1,23 +1,27 @@
-name: C/C++ CI
+name: MAIN-Branch CI Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  build:
-
+  test:
+    name: Build & Test.
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - uses: actions/checkout@v4
+      - name: Build_install
+        run: |
+          sudo apt-get install build-essential
+          sudo apt-get install cmake python3-dev
+
+      - name: CI-exec3-CMake
+        run: |
+          cd ./subDir/CI/exec_3
+          mkdir -p build
+          cd ./build
+          cmake .. && make && ./run_test
+          cmake .. && make test
