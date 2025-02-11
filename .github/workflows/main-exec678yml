@@ -1,0 +1,58 @@
+name: MAIN-Exercise
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build Test files.
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build_install
+        run: |
+          sudo apt-get install build-essential zip
+          sudo apt-get install libgtest-dev
+
+      - name: Build file(s)
+        run: |
+          cd ./subDir/CI/exec_2
+          make && cd ./build
+          zip files.zip test
+
+      - name: Run Test
+        run: |
+          cd ./subDir/CI/exec_2
+          make check
+
+      - name: Upload file
+        uses: actions/upload-artifact@v4
+        with:
+          name: files
+          path: ./subDir/CI/exec_2/build/files
+
+  release:
+    if: ${{github.ref == 'refs/heads/main' && github.event_name == 'push'}}
+    name: Upload & Release
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+        - name: Download action
+          uses: actions/download-artifact@v4
+          with:
+            name: files
+
+        - name: asd
+          uses: "crowbarmaster/GH-Automatic-Releases@latest"
+          with: 
+            repo_token: "${{secrets.GITHUB_TOKEN}}"
+            automatic_release_tag: latest
+            prerelease: true
+            title: "CI Exercise Release"
+            files: ./subDir/CI/exec_2/build/files.zip
+
+            
