@@ -150,7 +150,7 @@ TEST(QUEUE_STRING, MOVABLE) {
   EXPECT_EQ(queue_two.amount(),0);
   EXPECT_EQ(queue.amount(), 5);
   
-  for (size_t i = 4; i < 10; i++) {
+  for (size_t i = 5; i < 10; i++) {
     answer = "STRING-" + std::to_string(i);
     EXPECT_TRUE(queue.dequeue(temp));
     EXPECT_EQ(temp, answer);
