@@ -18,4 +18,4 @@ build:
 check:
 	./build/test
 
-.PHONY: check build
+.PHONY: check build all

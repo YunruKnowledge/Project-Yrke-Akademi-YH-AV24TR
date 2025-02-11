@@ -1,4 +1,4 @@
-name: MAIN-Branch CI Test
+name: MAIN-CI Test
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
           mkdir -p build
           cd ./build
           cmake .. && make && ./run_test
-          cmake .. && make test
+          make test
 
       - name: CI-exec_4-CMake
         run: |
@@ -33,7 +33,7 @@ jobs:
           mkdir -p build
           cd ./build
           cmake .. && make && ./run_test
-          cmake .. && make test
+          make test
 
       - name: CI-exec_5-CMake
         run: |
@@ -41,4 +41,4 @@ jobs:
           mkdir -p build
           cd ./build
           cmake .. && make && ./run_test
-          cmake .. && make test
+          make test
