@@ -1,0 +1,32 @@
+name: Test Dummy Calls
+
+on:
+  push:
+    branches: [ "exLazar" ]
+  pull_request:
+    branches: [ "exLazar" ]
+
+
+jobs:
+  check:
+    name: Build & Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        run:
+          sudo apt-get update && sudo apt-get upgrade
+          sudo apt-get install gtest zip
+      - name: Build
+        run:
+          make && cd build
+          zip programs.zip main test
+      - name: Run the Test
+        run:
+          make check
+      - name: Upload Programs
+        uses: actions/upload-artifact@v4
+        with:
+          name: programs
+          path: build.programs.zip

@@ -27,5 +27,5 @@ TEST(Test, _test) {
     today today{date};
 
     std::cout << (today.isLeapYear() ? "Today is a leap year!" : "Today is not a leap year") << std::endl;
-    std::cout << today.showDate() << std::endl;
+    std::cout << today << std::endl;
 }

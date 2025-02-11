@@ -9,6 +9,13 @@ class today {
     int day;
 
 public:
+    friend std::ostream &operator<<(std::ostream &os, const today &today) {
+        os << std::to_string(today.day) + std::string("/") + std::to_string(today.month) + std::string("-") +
+                std::to_string(today.year);
+        return os;
+    }
+
+public:
     today(IDate &_date) : year{_date.getYear()}, month{_date.getMonth()}, day{_date.getDay()} {
     }
 
@@ -25,14 +32,6 @@ public:
         }
 
         return status;
-    }
-
-    std::string showDate(void) {
-        std::string res;
-        res = (std::to_string(day) + std::string("/") + std::to_string(month) + std::string("-") +
-               std::to_string(year));
-
-        return res;
     }
 };
 
