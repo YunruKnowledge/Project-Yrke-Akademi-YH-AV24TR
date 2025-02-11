@@ -15,9 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install
-        run:
-          sudo apt-get update && sudo apt-get upgrade
-          sudo apt-get install gtest zip
+        run: sudo apt-get install gtest zip
       - name: Build
         run:
           make && cd build
