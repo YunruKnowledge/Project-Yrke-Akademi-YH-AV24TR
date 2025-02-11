@@ -22,7 +22,7 @@ jobs:
         run: |
           cd ./subDir/CI/exec_3
           make && cd ./build
-          zip files.zip test
+          zip release_files.zip test
 
       - name: Run Test
         run: |
@@ -32,8 +32,8 @@ jobs:
       - name: Upload file
         uses: actions/upload-artifact@v4
         with:
-          name: files
-          path: ./subDir/CI/exec_2/build/files
+          name: release_files
+          path: ./subDir/CI/exec_2/build/release_files
 
   release:
     if: ${{github.ref == 'refs/heads/main' && github.event_name == 'push'}}
@@ -44,7 +44,7 @@ jobs:
         - name: Download action
           uses: actions/download-artifact@v4
           with:
-            name: files
+            name: release_files
 
         - name: asd
           uses: "crowbarmaster/GH-Automatic-Releases@latest"
@@ -53,6 +53,7 @@ jobs:
             automatic_release_tag: latest
             prerelease: true
             title: "CI Exercise Release"
-            files: ./subDir/CI/exec_2/build/files.zip
+            file: |
+              ./subDir/CI/exec_2/build/release_files.zip
 
             
