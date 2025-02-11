@@ -2,8 +2,7 @@
 #include "date.hpp"
 #include "today.hpp"
 
-TEST(Test, _test)
-{
+TEST(Test, _test) {
     date date;
     today today{date};
 
