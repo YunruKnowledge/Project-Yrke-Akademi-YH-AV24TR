@@ -20,9 +20,14 @@ public:
 
   friend std::ostream &operator<<(std::ostream &_os, TicTac _game) {
 
+    _os << "=====";
+        _os << std::endl;
+    _os << "|";
     for (size_t i = 0; i < GAME_SIZE; i++) {
       if ((i != 0) && ((i) % 3 == 0)) {
+        _os << "|";
         _os << std::endl;
+        _os << "|";
       }
 
       if (_game.state_game[i] == 0) {
@@ -33,6 +38,9 @@ public:
         _os << "O";
       }
     }
+    _os << "|";
+        _os << std::endl;
+    _os << "=====";
     return _os;
   }
 
