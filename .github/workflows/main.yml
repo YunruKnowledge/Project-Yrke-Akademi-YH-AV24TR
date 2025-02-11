@@ -19,9 +19,25 @@ jobs:
           sudo apt-get install cmake python3-dev
           sudo apt-get install libgtest-dev
 
-      - name: CI-exec3-CMake
+      - name: CI-exec_3-CMake
         run: |
           cd ./subDir/CI/exec_3
+          mkdir -p build
+          cd ./build
+          cmake .. && make && ./run_test
+          cmake .. && make test
+
+      - name: CI-exec_4-CMake
+        run: |
+          cd ./subDir/CI/exec_4
+          mkdir -p build
+          cd ./build
+          cmake .. && make && ./run_test
+          cmake .. && make test
+
+      - name: CI-exec_5-CMake
+        run: |
+          cd ./subDir/CI/exec_5
           mkdir -p build
           cd ./build
           cmake .. && make && ./run_test
