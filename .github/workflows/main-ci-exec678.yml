@@ -1,0 +1,35 @@
+name: MAIN-Exercise-678
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: CI Exercise 6-8 Makefile Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installing Compilers & Libraries
+        run: |
+          sudo apt-get install build-essential
+          sudo apt-get install libgtest-dev
+
+      - name: CI Exercise 3
+        run: |
+          cd ./subDir/CI/exec_3
+          make && make check
+          
+      - name: CI Exercise 4
+        run: |
+          cd ./subDir/CI/exec_4
+          make && make check
+
+      - name: CI Exercise 5
+        run: |
+          cd ./subDir/CI/exec_5
+          make && make check
+            
