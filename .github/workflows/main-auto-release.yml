@@ -34,27 +34,27 @@ jobs:
         with:
           name: release_files
           path: ./subDir/CI/exec_3/build/release_files.zip
-          
+
       - name: READING BUILD FOLDER <-- DEBUG
         run: ls -R ./subDir/CI/exec_3/build
-          
+
   release:
     if: ${{github.ref == 'refs/heads/main' && github.event_name == 'push'}}
     name: Upload & Release
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-        - name: Download action
-          uses: actions/download-artifact@v4
-          with:
-            name: release_files
-            path: .
+      - name: Download action
+        uses: actions/download-artifact@v4
+        with:
+          name: release_files
+          path: .
 
-        - name: Release
-          uses: "crowbarmaster/GH-Automatic-Releases@latest"
-          with: 
-            repo_token: "${{secrets.GITHUB_TOKEN}}"
-            automatic_release_tag: latest
-            prerelease: true
-            title: "CI Exercise Release"
-            file: ./release_files/release_files.zip
+      - name: Release
+        uses: "crowbarmaster/GH-Automatic-Releases@latest"
+        with: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: latest
+          prerelease: false
+          title: CI Exercise Release
+          file: ./release_files/release_files.zip
