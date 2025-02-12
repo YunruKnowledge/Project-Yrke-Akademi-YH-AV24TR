@@ -33,9 +33,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release_files
-          path: ./subDir/CI/exec_3/build/release_files
+          path: ./subDir/CI/exec_3/build/release_files.zip
           
-      - name: Check files
+      - name: READING BUILD FOLDER <-- DEBUG
         run: ls -R ./subDir/CI/exec_3/build
           
   release:
