@@ -34,7 +34,10 @@ jobs:
         with:
           name: release_files
           path: ./subDir/CI/exec_3/build/release_files
-
+          
+      - name: Check files
+        run: ls -R ./subDir/CI/exec_3/build
+          
   release:
     if: ${{github.ref == 'refs/heads/main' && github.event_name == 'push'}}
     name: Upload & Release
@@ -45,6 +48,7 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name: release_files
+            path: .
 
         - name: Release
           uses: "crowbarmaster/GH-Automatic-Releases@latest"
@@ -53,6 +57,4 @@ jobs:
             automatic_release_tag: latest
             prerelease: true
             title: "CI Exercise Release"
-            file: release_files.zip
-
-            
+            file: ./release_files/release_files.zip
