@@ -52,7 +52,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: release_files
-          path: .
 
       - name: Release
         uses: "crowbarmaster/GH-Automatic-Releases@latest"
@@ -61,4 +60,4 @@ jobs:
           automatic_release_tag: latest
           prerelease: true
           title: CI Exercise Release
-          files: ./release_files/release_files.zip
+          files: release_files.zip
