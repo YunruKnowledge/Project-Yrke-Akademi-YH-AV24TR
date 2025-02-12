@@ -46,14 +46,13 @@ jobs:
           with:
             name: release_files
 
-        - name: asd
+        - name: Release
           uses: "crowbarmaster/GH-Automatic-Releases@latest"
           with: 
             repo_token: "${{secrets.GITHUB_TOKEN}}"
             automatic_release_tag: latest
             prerelease: true
             title: "CI Exercise Release"
-            file: |
-              ./subDir/CI/exec_2/build/release_files.zip
+            file: release_files.zip
 
             
