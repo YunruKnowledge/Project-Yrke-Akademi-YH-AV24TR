@@ -13,7 +13,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Build_install
+        with:
+          fetch-depth: 0
+
+      - name: Intalliing dependecies
         run: |
           sudo apt-get install build-essential zip
           sudo apt-get install libgtest-dev
