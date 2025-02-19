@@ -1,0 +1,16 @@
+{
+    "id":"0x100",
+    "signals":[
+        {"name":"temperature",                   "type":"float",    "length":10, "comment":"the ambient temperature"},
+        {"name":"humidity",                      "type":"uint8_t",  "length":7,  "comment":"the ambient humidity percentage"},
+        {"name":"dht_sensor_status",             "type":"uint8_t",  "length":2,  "comment":"the dht sensor status"},
+        {"name":"flow_rate",                     "type":"uint16_t", "length":9,  "comment":"the flow rate in milliliter per second"},
+        {"name":"flow_meter_sensor_status",      "type":"uint8_t",  "length":2,  "comment":"the flow meter sensor status"},
+        {"name":"light_intensity",               "type":"uint8_t",  "length":7,  "comment":"the light intensity percentage"},
+        {"name":"light_intensity_sensor_status", "type":"uint8_t",  "length":2,  "comment":"the light intensity sensor status"},
+        {"name":"water_level",                   "type":"uint8_t",  "length":7,  "comment":"the water level percentage"},
+        {"name":"water_level_sensor_status",     "type":"uint8_t",  "length":2,  "comment":"the water level sensor status"},
+        {"name":"soil_moisture",                 "type":"uint8_t",  "length":7,  "comment":"the soil moisture percentage"},
+        {"name":"soil_moisture_sensor_status",   "type":"uint8_t",  "length":2,  "comment":"the soil moisture sensor status"}
+    ]
+}
