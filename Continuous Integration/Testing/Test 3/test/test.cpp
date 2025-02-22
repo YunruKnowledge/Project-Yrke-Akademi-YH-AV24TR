@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "today.hpp"
-#include "IDate.hpp"
+#include "today.h"
+#include "IDate.h"
 
 class date : public IDate {
 private:

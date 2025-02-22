@@ -1,7 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <type_traits>
 template <typename T>
 class queue
 {

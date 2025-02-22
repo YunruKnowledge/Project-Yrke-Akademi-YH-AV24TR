@@ -1,7 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <type_traits>
+#include "IMemory.h"
+
 template <typename T>
 class queue
 {
@@ -18,18 +19,20 @@ class queue
 
     int count;
 
+    IMemory &memory;
+
 public:
-    queue() : top{nullptr}, bottom{nullptr}, count{0} {};
+    queue(IMemory &mem) : top{nullptr}, bottom{nullptr}, count{0}, memory{mem} {};
 
     queue(const queue &) = delete;
-    queue(queue &&q) noexcept : top{q.top}, bottom{q.bottom}, count{q.count}
+    queue(queue &&q) noexcept : top{q.top}, bottom{q.bottom}, count{q.count}, memory{q.memory}
     {
         q.top = q.bottom = nullptr;
         q.count = 0;
     };
 
     queue &operator=(const queue &) = delete;
-    queue &operator=(queue &&q)
+    queue &operator=(queue &&q) noexcept
     {
         if (this != &q)
         {
@@ -39,6 +42,7 @@ public:
         top = q.top;
         bottom = q.bottom;
         count = q.count;
+        memory = q.memory;
 
         q.top = q.bottom = nullptr;
         q.count = 0;

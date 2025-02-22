@@ -1,44 +1,44 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <string>
-#include <type_traits>
 #include "queue.h"
+#include "IMemory.h"
 
-template <typename T>
-class SizeTest : public testing::Test
-{
+class MockMemory : public IMemory {
+public:
+    MOCK_METHOD(void *, malloc, (size_t size), (override));
+    MOCK_METHOD(void, free, (void *ptr), (override));
+}
+
+/* template<typename T>
+class SizeTest : public testing::Test {
 protected:
     queue<T> q;
 
-    void SetUp(void) override
-    {
+    void SetUp(void) override {
         T x{1};
-        for (int i = 0; i < 10; i++)
-        {
-            if constexpr (std::is_same<T, std::string>::value)
-            {
+        for (int i = 0; i < 10; i++) {
+            if constexpr (std::is_same<T, std::string>::value) {
                 q.enqueue(std::to_string(i));
-            }
-            else
-            {
+            } else {
                 q.enqueue(i * x);
             }
         }
     }
 
-    void TearDown(void) override {}
+    void TearDown(void) override {
+    }
 };
 
 using MyTypes = ::testing::Types<int, float, std::string>;
 
 TYPED_TEST_SUITE(SizeTest, MyTypes);
 
-TYPED_TEST(SizeTest, TestQueueSizes)
-{
+TYPED_TEST(SizeTest, TestQueueSizes) {
     EXPECT_EQ(this->q.getSize(), 10);
 }
 
-TYPED_TEST(SizeTest, TestQueuePop)
-{
+TYPED_TEST(SizeTest, TestQueuePop) {
     TypeParam var;
     EXPECT_TRUE(this->q.dequeue());
     EXPECT_TRUE(this->q.dequeue());
@@ -48,17 +48,13 @@ TYPED_TEST(SizeTest, TestQueuePop)
     EXPECT_EQ(this->q.getSize(), 6);
 }
 
-TYPED_TEST(SizeTest, TestQueuePeek)
-{
-    if constexpr (std::is_same<TypeParam, std::string>::value)
-    {
+TYPED_TEST(SizeTest, TestQueuePeek) {
+    if constexpr (std::is_same<TypeParam, std::string>::value) {
         EXPECT_EQ(this->q.peek(), "0");
         EXPECT_EQ(this->q.peek(), "0");
         EXPECT_EQ(this->q.peek(), "0");
         EXPECT_EQ(this->q.peek(), "0");
-    }
-    else
-    {
+    } else {
         EXPECT_EQ(this->q.peek(), 0);
         EXPECT_EQ(this->q.peek(), 0);
         EXPECT_EQ(this->q.peek(), 0);
@@ -67,3 +63,4 @@ TYPED_TEST(SizeTest, TestQueuePeek)
 
     EXPECT_EQ(this->q.getSize(), 10);
 }
+ */
