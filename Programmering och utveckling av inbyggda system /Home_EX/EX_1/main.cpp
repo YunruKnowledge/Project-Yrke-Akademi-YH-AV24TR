@@ -4,7 +4,6 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <condition_variable>
 #include <mutex>
 
 void create_threads(void);
@@ -13,18 +12,15 @@ void print_ping(void);
 
 void print_pong(void);
 
-constexpr static int PING = 0;
-constexpr static int PONG = 1;
 constexpr static int LOOP = 10;
 constexpr static int WAIT = 1;
 
-static volatile int ping_pong = PING;
-
-std::mutex mtx;
-std::condition_variable cv;
+std::mutex mtx_ping, mtx_pong;
 
 int main(void) {
-    create_threads();
+    for (int i = 0; i < LOOP; i++) {
+        create_threads();
+    }
 
     return 0;
 }
@@ -35,35 +31,19 @@ void create_threads() {
 
     t1.join();
     t2.join();
+
+    std::this_thread::sleep_for(std::chrono::seconds(WAIT));
 }
 
 
 void print_ping(void) {
-    for (int i = 0; i < LOOP; i++) {
-        std::unique_lock<std::mutex> lock(mtx);
-
-        cv.wait(lock, [] { return ping_pong == PING; });
-
-        std::cout << "Ping - ";
-        ping_pong = PONG;
-
-        mtx.unlock();
-        cv.notify_all();
-    }
+    mtx_ping.lock();
+    std::cout << "Ping - ";
+    mtx_ping.unlock();
 }
 
 void print_pong(void) {
-    for (int i = 0; i < LOOP; i++) {
-        std::unique_lock<std::mutex> lock(mtx);
-
-        cv.wait(lock, [] { return ping_pong == PONG; });
-
-        std::cout << "Pong" << std::endl;
-        ping_pong = PING;
-
-        std::this_thread::sleep_for(std::chrono::seconds(WAIT));
-
-        mtx.unlock();
-        cv.notify_all();
-    }
+    mtx_pong.lock();
+    std::cout << "Pong" << std::endl;
+    mtx_pong.unlock();
 }
