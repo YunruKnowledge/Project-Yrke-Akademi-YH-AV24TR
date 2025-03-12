@@ -2,31 +2,36 @@
 #include <mutex>
 #include <thread>
 
+
 std::mutex mtx;
 std::mutex mtx2;
 
 void ping(void) {
-  mtx.lock();
-  std::cout << "Ping";
-  mtx2.unlock();
+  while(true) {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    mtx.lock();
+    std::cout << "Ping";
+    mtx2.unlock();
+  }
 }
 
 void pong(void) {
-  mtx2.lock();
-  std::cout << " - Pong" << std::endl;
-  mtx.unlock();
+  while(true) {
+    mtx2.lock();
+    std::cout << " - Pong" << std::endl;
+    mtx.unlock();
+    // std::this_thread::sleep_for(std::chrono::seconds(1));
+  }
 }
 
 int main(void) {
-  for (size_t i = 0; i < 10; i++) {
-    std::thread t1{ping};
-    std::thread t2{pong};
+  mtx2.lock();
 
-    t2.detach();
-    t1.detach();
+  std::thread t1{ping};
+  std::thread t2{pong};
 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-  }
+  t2.join();
+  t1.join();
 
   return 0;
 }
