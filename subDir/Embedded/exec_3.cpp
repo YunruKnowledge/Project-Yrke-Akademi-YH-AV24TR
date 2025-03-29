@@ -8,7 +8,6 @@
 #include <vector>
 
 static std::mutex mtx;
-static std::shared_mutex shmtx;
 static std::condition_variable condition;
 
 template <typename T, int SIZE> class Stack {
@@ -27,7 +26,6 @@ public:
    */
   void push(const T _value) {
     std::unique_lock<std::mutex> lock{mtx};
-
     while (amount >= SIZE) {
       condition.wait(lock);
     }
@@ -55,7 +53,6 @@ public:
 
     lock.unlock();
     condition.notify_all();
-
     return var;
   }
 };
@@ -80,7 +77,6 @@ template <typename T, int SIZE> void th_pop(Stack<T, SIZE> &_stack) {
       std::unique_lock<std::mutex> lock{mtx};
       std::cout << "<-" << var << std::endl;
     }
-
     std::this_thread::sleep_for(std::chrono::milliseconds((rand() % 100 + 1)));
   }
 }
