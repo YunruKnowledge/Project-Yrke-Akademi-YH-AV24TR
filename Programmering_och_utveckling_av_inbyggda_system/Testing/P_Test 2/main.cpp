@@ -18,14 +18,16 @@ class Stack {
 public:
     Stack() = default;
 
+    Stack(const Stack &) = delete;
+
+    Stack &operator=(const Stack &) = delete;
+
     ~Stack() = default;
 
 public:
     void push(T const &value);
 
     T pop();
-
-    size_t size(void) const { return capacity; };
 };
 
 template<typename T, size_t N>
