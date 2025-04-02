@@ -25,7 +25,7 @@
 static const char *P_TAG = "Potentiometer";
 static const char *L_TAG = "LED";
 
-static const gpio_num_t POTENTIOMETER = ADC_ATTEN_DB_0;
+static const gpio_num_t POTENTIOMETER = ADC_ATTEN_DB_12;
 static const gpio_num_t LED = GPIO_NUM_4;
 
 float maped(const float x, const float in_min, const float in_max, const float out_min, const float out_max) {
@@ -90,7 +90,7 @@ void app_main(void) {
         (void) printf("DEBUG: Mapped Voltage: %.02f \n", map);
 
         const int percent = ((map - V_IN_OUT_MIN) / (V_OUT_MAX - V_IN_OUT_MIN)) * 100;
-        (void) printf("DEBUG: Mapped Voltage: %d \n\n", percent);
+        (void) printf("DEBUG: Percent: %d \n\n", percent);
 
         ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY_PERCENT_TO_VALUE(percent)));
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
