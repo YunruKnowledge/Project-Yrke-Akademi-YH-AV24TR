@@ -1,0 +1,29 @@
+{
+  "version": 7,
+  "cmakeMinimumRequired": {
+    "major": 3
+  },
+  "configurePresets": [
+    {
+      "name": "debug-env",
+      "displayName": "debug-env",
+      "hidden": true,
+      "environment": {
+        "ZEPHYR_BASE": "${env:HOME}/zephyr/zephyr",
+        "ZEPHYR_SDK_INSTALL_DIR": "",
+        "MCUX_VENV_PATH": "/home/roki/.mcuxpressotools/.venv/bin",
+        "PATH": "$env{MCUX_VENV_PATH}:$penv{PATH}"
+      }
+    },
+    {
+      "name": "release-env",
+      "displayName": "release-env",
+      "hidden": true,
+      "environment": {
+        "ZEPHYR_BASE": "${env:HOME}/zephyr/zephyr",
+        "ZEPHYR_SDK_INSTALL_DIR": ""
+      }
+    }
+  ],
+  "buildPresets": []
+}
