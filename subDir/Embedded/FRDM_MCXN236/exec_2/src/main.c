@@ -1,1 +1,0 @@
-#include <zephyr/kernel.h>
