@@ -1,0 +1,49 @@
+{
+  "version": 7,
+  "cmakeMinimumRequired": {
+    "major": 3
+  },
+  "configurePresets": [
+    {
+      "name": "debug",
+      "displayName": "debug",
+      "generator": "Ninja",
+      "binaryDir": "${fileDir}/build",
+      "inherits": "debug-env",
+      "cacheVariables": {
+        "APP_DIR": "${fileDir}",
+        "BOARD": "frdm_mcxn236",
+        "CMAKE_BUILD_TYPE": "debug",
+        "ZEPHYR_BASE": "$env{ZEPHYR_BASE}"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "release",
+      "generator": "Ninja",
+      "binaryDir": "${fileDir}/build",
+      "inherits": "release-env",
+      "cacheVariables": {
+        "APP_DIR": "${fileDir}",
+        "BOARD": "frdm_mcxn236",
+        "CMAKE_BUILD_TYPE": "release",
+        "ZEPHYR_BASE": "$env{ZEPHYR_BASE}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "displayName": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "release",
+      "displayName": "release",
+      "configurePreset": "release"
+    }
+  ],
+  "include": [
+    "mcux_include.json"
+  ]
+}

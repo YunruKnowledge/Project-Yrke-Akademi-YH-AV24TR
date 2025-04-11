@@ -1,0 +1,10 @@
+#include <zephyr/dt-bindings/pwm/pwm.h>
+
+/ {
+    pwmleds {
+        compatible = "pwm-leds";
+        pwm_led: pwm_led {
+            pwms = <&flexpwm1_pwm0 0 10000000 PWM_POLARITY_NORMAL>;
+        };
+    };
+};

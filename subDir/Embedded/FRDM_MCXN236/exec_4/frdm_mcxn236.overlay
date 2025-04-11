@@ -1,0 +1,25 @@
+#include <zephyr/dt-bindings/pwm/pwm.h>
+
+/ {
+    pwmleds {
+        compatible = "pwm-leds";
+        pwm_red: pwm_red {
+            pwms = <&flexpwm1_pwm0 0 10000000 PWM_POLARITY_NORMAL>;
+        };
+        pwm_green: pwm_green {
+            pwms = <&flexpwm1_pwm0 1 10000000 PWM_POLARITY_NORMAL>;
+        };
+        pwm_blue: pwm_blue {
+            pwms = <&flexpwm1_pwm1 0 10000000 PWM_POLARITY_NORMAL>;
+        };
+    };
+};
+
+&flexpwm1_pwm1 {
+	status = "okay";
+};
+
+&flexpwm1_pwm1 {
+	pinctrl-0 = <&pinmux_flexpwm1_pwm1>;
+	pinctrl-names = "default";
+};

@@ -1,0 +1,40 @@
+#include <zephyr/dt-bindings/adc/adc.h>
+#include <zephyr/dt-bindings/adc/mcux-lpadc.h>
+#include <zephyr/dt-bindings/pwm/pwm.h>
+
+/ {
+    pwmleds {
+        compatible = "pwm-leds";
+        pwm_led: pwm_led {
+            pwms = <&flexpwm1_pwm0 0 10000000 PWM_POLARITY_NORMAL>;
+        };
+    };
+};
+
+/ {
+	zephyr,user {
+		io-channels = <&lpadc0 0>;
+	};
+};
+
+&peripheral {
+	lpadc0: lpadc@10d000 {
+		voltage-ref= <0>;
+	};
+};
+
+&lpadc0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	channel@0 {
+		reg = <0>;
+		zephyr,gain = "ADC_GAIN_1";
+		zephyr,reference = "ADC_REF_EXTERNAL1";
+		zephyr,vref-mv = <3300>;
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,resolution = <12>;
+		zephyr,oversampling = <4>;
+		zephyr,input-positive = <MCUX_LPADC_CH3A>; /* J4 pin 2 */
+	};
+};
