@@ -135,7 +135,7 @@ void app_main(void) {
   ESP_LOGI(TAG, "UART initialized");
 
   uart_event_t event;
-  uint8_t buffer[BUF_SIZE];
+  char buffer[BUF_SIZE];
 
   while (1) {
     if (pdTRUE == xQueueReceive(queue, (void *)&event, portMAX_DELAY)) {
