@@ -1,15 +1,12 @@
-
-
-#include <exception>
+#include <condition_variable>
 #include <iostream>
+#include <mutex>
 #include <stdint.h>
 #include <string>
-
-#include <condition_variable>
-#include <mutex>
 #include <thread>
 
 #define MINIMUN_CAPACITY 8
+#define MINIMUN_CONSUMERS 2
 
 // Set CAPACITY TO 8 or above, with inline command '-DCAPACITY=[INSERT_NUMBER]'
 #ifdef CAPACITY
@@ -20,13 +17,9 @@
 #error No capacity set, please set 'CAPACITY' to 8 or above.
 #endif
 
-static uint64_t MINIMUM_ID{1001};
-static constexpr uint32_t CONSUMER_INTERVAL_MS{1000};
-static uint16_t CSMR_COUNT{1};
-static uint8_t MINIMUM_CONSUMERS{2};
-
-static std::mutex MTX;
-static std::condition_variable CONDITION_VAR;
+static uint64_t GLOBAL_ID_INDEX{1001};
+static constexpr uint32_t RANDOM_MODULUS_VALUE{1000};
+static uint16_t CONSUMER_COUNT{1};
 
 /**
  * @brief Vehicle, main class for cars and trucks.
@@ -40,15 +33,11 @@ class Vehicle {
   std::string type;
 
 public:
-  Vehicle() {
-    id = MINIMUM_ID;
-    MINIMUM_ID++;
+  Vehicle(const std::string &_model, const std::string &_type)
+      : model{_model}, type{_type} {
+    id = GLOBAL_ID_INDEX;
+    GLOBAL_ID_INDEX++;
   };
-
-  void setProperties(const std::string &_model, const std::string &_type) {
-    model = _model;
-    type = _type;
-  }
 
   uint64_t getId(void) { return id; }
   std::string getModel(void) { return model; }
@@ -66,9 +55,8 @@ class Truck : public Vehicle {
   uint32_t max;
 
 public:
-  Truck(uint32_t _max_load, const std::string &_model) : max{_max_load} {
-    setProperties(_model, "Truck");
-  }
+  Truck(uint32_t _max_load, const std::string &_model)
+      : max{_max_load}, Vehicle(_model, "Truck") {}
 
   void print(void) override {
     std::cout << "ID: " << getId() << std::endl;
@@ -88,9 +76,7 @@ class Car : public Vehicle {
 
 public:
   Car(uint8_t _max_passengers, const std::string &_model)
-      : max{_max_passengers} {
-    setProperties(_model, "Car");
-  }
+      : max{_max_passengers}, Vehicle(_model, "Car") {}
 
   void print(void) override {
     std::cout << "ID: " << getId() << std::endl;
@@ -109,45 +95,42 @@ public:
 class Warehouse {
   std::shared_ptr<Vehicle> array[CAPACITY];
   uint32_t size{CAPACITY};
+
   uint32_t head{0};
   uint32_t tail{0};
   uint32_t count{0};
+
+  std::mutex MTX;
+  std::condition_variable CONDITION_VAR;
 
 public:
   Warehouse(const Warehouse &) = delete;
   Warehouse &operator=(const Warehouse &) = delete;
   Warehouse() = default;
 
-  bool pop(std::shared_ptr<Vehicle> &_var) {
+  void pop(std::shared_ptr<Vehicle> &_var) {
     std::unique_lock<std::mutex> lock{MTX};
 
-    while (count <= 0) {
+    while (count == 0) {
       CONDITION_VAR.wait(lock);
     }
 
-    bool status{false};
     if (count > 0) {
       _var = array[tail];
 
       // increments tail, loops if reaches end.
-      if (tail >= size - 1) {
-        tail = 0;
-      } else {
-        tail++;
-      }
+      tail = (tail + 1) % size;
 
       count--;
-      status = true;
     } else {
       ;
     }
 
     lock.unlock();
     CONDITION_VAR.notify_all();
-    return status;
   }
 
-  bool push(std::shared_ptr<Vehicle> _value) {
+  void push(std::shared_ptr<Vehicle> _value) {
     std::unique_lock<std::mutex> lock{MTX};
 
     // if head catches tail. (Sleeps when full.)
@@ -155,7 +138,6 @@ public:
       CONDITION_VAR.wait(lock);
     }
 
-    bool status{true};
     array[head] = _value;
 
     // increments tail if head catches tail. (Theoretically never happens?)
@@ -165,18 +147,10 @@ public:
       } else {
         tail++;
       }
-      status = false;
     }
 
-    // increments head loops if reaches end.
-    if (head >= size - 1) {
-      head = 0;
-    } else {
-      if (head == tail && count > 0) {
-        tail++;
-      }
-      head++;
-    }
+    // increments head, loops if reaches end.
+    head = (head + 1) % size;
 
     // increments count, not if more than size.
     if (count < size) {
@@ -185,31 +159,17 @@ public:
 
     lock.unlock();
     CONDITION_VAR.notify_all();
-    return status;
-  }
-
-  void clear(void) {
-    std::unique_lock<std::mutex> lock{MTX};
-
-    head = 0;
-    tail = 0;
-    count = 0;
-
-    lock.unlock();
-    CONDITION_VAR.notify_one();
   }
 };
 
 /**
- * @brief Producer, randomly pushes Truck or Car.
+ * @brief Producer thread, randomly pushes Truck or Car.
  *
  * @param _warehouse
  */
 static void producer(std::shared_ptr<Warehouse> _warehouse) {
   while (1) {
-
-    if ((rand() % 10) >=
-        5) { // randomly truck or car, [0-10] if > 4 then truck.
+    if ((rand() % 2 == 0)) {
       std::shared_ptr<Truck> temp = NULL;
       temp = std::make_shared<Truck>((rand() % 16000 + 2000),
                                      "Ford Viola FF5. Trunk");
@@ -221,22 +181,22 @@ static void producer(std::shared_ptr<Warehouse> _warehouse) {
       _warehouse->push(temp);
     }
 
-    // "randomly" - assuming random timing as well.
-    std::this_thread::sleep_for(std::chrono::milliseconds(
-        (rand() % CONSUMER_INTERVAL_MS) ));
+    // faster than single consumer.
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds((rand() % RANDOM_MODULUS_VALUE / 2)));
   }
 }
 
 /**
- * @brief Consumer thread. Pops and print.
+ * @brief Consumer thread. Randomly pops and print.
  *
  * @param _warehouse
  */
 static void consumer(std::shared_ptr<Warehouse> _warehouse) {
   static std::mutex csmr_mtx;
   csmr_mtx.lock();
-  uint16_t index = CSMR_COUNT;
-  CSMR_COUNT++;
+  uint16_t index = CONSUMER_COUNT;
+  CONSUMER_COUNT++;
   csmr_mtx.unlock();
 
   while (1) {
@@ -248,47 +208,44 @@ static void consumer(std::shared_ptr<Warehouse> _warehouse) {
     std::cout << std::endl;
     csmr_mtx.unlock();
 
-    // "at a time" - assuming no random timing like the producer.
     std::this_thread::sleep_for(
-        std::chrono::milliseconds(CONSUMER_INTERVAL_MS));
+        std::chrono::milliseconds(rand() % RANDOM_MODULUS_VALUE));
   }
 }
 
-/**
- * @brief Allows setting for consumer amount of threads.
- *
- * @param _amount_csmr
- * @param _warehouse
- */
-static void setConsumers(const uint8_t _amount_csmr,
-                         std::shared_ptr<Warehouse> _warehouse) {
-  if (_amount_csmr < MINIMUM_CONSUMERS) {
-    throw std::range_error("Below minimum consumer amount.");
+int main(int argc, char const *argv[]) {
+  if (argc != 2) {
+    std::cout
+        << "No argument or too many arguments found for amount of comsumers."
+        << std::endl
+        << "Set amount of consumers by adding a argument to the program. ('"
+        << MINIMUN_CONSUMERS << "' or above)" << std::endl
+        << "Exiting..." << std::endl;
+
+    exit(1);
+  } else if (atoi(argv[1]) < MINIMUN_CONSUMERS) {
+    std::cout << "Argument value incorrect." << std::endl
+              << "Provide number '" << MINIMUN_CONSUMERS << "' or above."
+              << std::endl
+              << "Exiting..." << std::endl;
+
+    exit(1);
   } else {
-    for (uint8_t i = 0; i < _amount_csmr; i++) {
-      std::thread thread{consumer, _warehouse};
+    srand(time(NULL));
+
+    // Warehouse buffer
+    std::shared_ptr<Warehouse> buffer = NULL;
+    buffer = std::make_shared<Warehouse>();
+
+    // Consumer
+    for (uint8_t i = 0; i < atoi(argv[1]); i++) {
+      std::thread thread{consumer, buffer};
       thread.detach();
     }
-  }
-}
 
-int main(void) {
-  srand(time(NULL));
-
-  // Warehouse buffer
-  std::shared_ptr<Warehouse> buffer = NULL;
-  buffer = std::make_shared<Warehouse>();
-
-  // Producer
-  std::thread thread{producer, buffer};
-  thread.detach();
-
-  // Consumer, first arg for amount, minimum 2.
-  setConsumers(5, buffer);
-
-  // sleep main thread for terminal output.
-  while (1) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+    // Producer
+    std::thread thread{producer, buffer};
+    thread.join();
   }
 
   return 0;
