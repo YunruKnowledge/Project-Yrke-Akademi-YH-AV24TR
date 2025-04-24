@@ -111,6 +111,7 @@ public:
   void pop(std::shared_ptr<Vehicle> &_var) {
     std::unique_lock<std::mutex> lock{MTX};
 
+    // Sleep whem empty.
     while (count == 0) {
       CONDITION_VAR.wait(lock);
     }
@@ -142,11 +143,7 @@ public:
 
     // increments tail if head catches tail. (Theoretically never happens?)
     if (head == tail && count > 0) {
-      if (tail >= size - 1) {
-        tail = 0;
-      } else {
-        tail++;
-      }
+      tail = (tail + 1) % size;
     }
 
     // increments head, loops if reaches end.
@@ -181,7 +178,7 @@ static void producer(std::shared_ptr<Warehouse> _warehouse) {
       _warehouse->push(temp);
     }
 
-    // faster than single consumer.
+    // randomly faster than single consumer.
     std::this_thread::sleep_for(
         std::chrono::milliseconds((rand() % RANDOM_MODULUS_VALUE / 2)));
   }
@@ -224,7 +221,7 @@ int main(int argc, char const *argv[]) {
 
     exit(1);
   } else if (atoi(argv[1]) < MINIMUN_CONSUMERS) {
-    std::cout << "Argument value incorrect." << std::endl
+    std::cout << "Argument value invalid." << std::endl
               << "Provide number '" << MINIMUN_CONSUMERS << "' or above."
               << std::endl
               << "Exiting..." << std::endl;
