@@ -1,0 +1,6 @@
+/ {
+	zephyr,user {
+		i2c = <&flexcomm2_lpi2c2>; /* The I2C device */
+		slave-address = <0x55>; /* The slave address */
+	};
+};
