@@ -14,5 +14,7 @@ bool bsp_pin_config(int pin, int mode, int pull);
 int bsp_pin_read(int pin);
 
 // Helper functions
+void bsp_set_config_return(bool _boolean);
+void bsp_set_read_return(int _intBool);
 
 #endif /* BSP_H */
