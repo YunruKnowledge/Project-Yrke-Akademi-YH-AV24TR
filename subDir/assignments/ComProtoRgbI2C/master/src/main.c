@@ -9,6 +9,7 @@
 #define MASTER I2C_NUM_0
 #define PIN_SDA GPIO_NUM_6
 #define PIN_SCL GPIO_NUM_7
+
 #define CLOCK_RATE 400000
 #define SLAVE_ADDRESS 0x01
 #define I2C_MSG_SIZE 1 // ALWAYS 1
@@ -20,10 +21,10 @@
 #define GREEN_TEXT "green"
 #define BLUE_TEXT "blue"
 #define OFF_TEXT "off"
-#define LENGTH(x) (sizeof(x) - 1)
+
+static const enum LED_STATE_CODES { CODE_OFF = 0, CODE_RED, CODE_GREEN, CODE_BLUE };
 
 static const char *TAG = "MASTER";
-static const enum LED_STATE_CODES { LED_OFF = 0, LED_RED, LED_GREEN, LED_BLUE };
 static i2c_master_dev_handle_t DEV_HANDLE;
 
 static char INPUT_BUFFER[INPUT_MAX_LENGTH + 1] = {0};
@@ -91,17 +92,18 @@ void app_main(void) {
     ask_input();
 
     if (strlen(INPUT_BUFFER) > 0) {
-      if (0 == strncmp(INPUT_BUFFER, RED_TEXT, LENGTH(RED_TEXT))) {
-        status = i2c_send_receive(LED_RED);
+      // + 1 to length to not match extra letters, e.g "offo" = false
+      if (0 == strncmp(INPUT_BUFFER, RED_TEXT, sizeof(RED_TEXT))) {
+        status = i2c_send_receive(CODE_RED);
 
-      } else if (0 == strncmp(INPUT_BUFFER, GREEN_TEXT, LENGTH(GREEN_TEXT))) {
-        status = i2c_send_receive(LED_GREEN);
+      } else if (0 == strncmp(INPUT_BUFFER, GREEN_TEXT, sizeof(GREEN_TEXT))) {
+        status = i2c_send_receive(CODE_GREEN);
 
-      } else if (0 == strncmp(INPUT_BUFFER, BLUE_TEXT, LENGTH(BLUE_TEXT))) {
-        status = i2c_send_receive(LED_BLUE);
+      } else if (0 == strncmp(INPUT_BUFFER, BLUE_TEXT, sizeof(BLUE_TEXT))) {
+        status = i2c_send_receive(CODE_BLUE);
 
-      } else if (0 == strncmp(INPUT_BUFFER, OFF_TEXT, LENGTH(OFF_TEXT))) {
-        status = i2c_send_receive(LED_OFF);
+      } else if (0 == strncmp(INPUT_BUFFER, OFF_TEXT, sizeof(OFF_TEXT))) {
+        status = i2c_send_receive(CODE_OFF);
       } else {
         ;
       }

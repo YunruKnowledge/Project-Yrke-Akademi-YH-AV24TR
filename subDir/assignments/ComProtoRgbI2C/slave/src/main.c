@@ -1,32 +1,37 @@
 #include <stdint.h>
 #include <zephyr/drivers/i2c.h>
 #include <zephyr/kernel.h>
-
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
 
 #define I2C_MSG_SIZE 1
+
 #define I2C_NODE DT_PROP(DT_PATH(zephyr_user), i2c)
 #define ADDRESS DT_PROP(DT_PATH(zephyr_user), address)
+
 #define RED_LED_NODE DT_ALIAS(led0)
 #define GREEN_LED_NODE DT_ALIAS(led1)
 #define BLUE_LED_NODE DT_ALIAS(led2)
 
+static const enum LED_STATE_CODES { CODE_OFF = 0, CODE_RED, CODE_GREEN, CODE_BLUE };
+
 static const struct gpio_dt_spec RED_LED =
     GPIO_DT_SPEC_GET(RED_LED_NODE, gpios);
+
 static const struct gpio_dt_spec GREEN_LED =
     GPIO_DT_SPEC_GET(GREEN_LED_NODE, gpios);
+
 static const struct gpio_dt_spec BLUE_LED =
     GPIO_DT_SPEC_GET(BLUE_LED_NODE, gpios);
+
 static uint8_t BUFFER[I2C_MSG_SIZE];
-static const enum LED_STATE_CODES { LED_OFF = 0, LED_RED, LED_GREEN, LED_BLUE };
 
 static int on_write_requested(struct i2c_target_config *_cfg) { return 0; }
 
 static int on_write_received(struct i2c_target_config *_cfg, uint8_t _val) {
   uint8_t status = 0;
 
-  if (_val == LED_OFF) {
+  if (_val == CODE_OFF) {
     if (!gpio_pin_set_dt(&RED_LED, 0) && !gpio_pin_set_dt(&GREEN_LED, 0) &&
         !gpio_pin_set_dt(&BLUE_LED, 0)) {
       status = 1;
@@ -34,19 +39,19 @@ static int on_write_received(struct i2c_target_config *_cfg, uint8_t _val) {
 			;
 		}
 
-  } else if (_val == LED_RED) {
-    gpio_pin_set_dt(&GREEN_LED, 0);
-    gpio_pin_set_dt(&BLUE_LED, 0);
+  } else if (_val == CODE_RED) {
+    (void)gpio_pin_set_dt(&GREEN_LED, 0);
+    (void)gpio_pin_set_dt(&BLUE_LED, 0);
     status = (gpio_pin_set_dt(&RED_LED, 1) == 0);
 
-  } else if (_val == LED_GREEN) {
-    gpio_pin_set_dt(&RED_LED, 0);
-    gpio_pin_set_dt(&BLUE_LED, 0);
+  } else if (_val == CODE_GREEN) {
+    (void)gpio_pin_set_dt(&RED_LED, 0);
+    (void)gpio_pin_set_dt(&BLUE_LED, 0);
     status = (gpio_pin_set_dt(&GREEN_LED, 1) == 0);
 
-  } else if (_val == LED_BLUE) {
-    gpio_pin_set_dt(&RED_LED, 0);
-    gpio_pin_set_dt(&GREEN_LED, 0);
+  } else if (_val == CODE_BLUE) {
+    (void)gpio_pin_set_dt(&RED_LED, 0);
+    (void)gpio_pin_set_dt(&GREEN_LED, 0);
     status = (gpio_pin_set_dt(&BLUE_LED, 1) == 0);
 
   } else {
@@ -129,7 +134,7 @@ int main(void) {
   }
 
   while (1) {
-    k_msleep(1000);
+    k_sleep(K_FOREVER);
   }
 
   return 0;
